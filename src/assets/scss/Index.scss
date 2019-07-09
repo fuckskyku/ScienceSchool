@@ -1,0 +1,739 @@
+/*
+ * File: Index.scss
+ * Project: scienceschool
+ * File Created: Tuesday, 21st May 2019 2:08:33 pm
+ * Author: LGH (1415684247@QQ.COM)
+ * -----
+ * Last Modified: Friday, 5th July 2019 9:30:58 am
+ * Modified By: LGH (1415684247@QQ.COM>)
+ * -----
+ * Copyright 2019 - 2019 Your Company, Your Company
+ */
+//公共的最大宽度
+.MAXWIDTH {
+  // margin: 0 auto;
+  // max-width: 1200px !important;
+}
+//公共的系统设置模块头部
+.PublicTitle {
+  // padding: 12px 10px;
+  // border: 1px solid red;
+  background: #ecf7fc;
+  font-size: 18px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 40px;
+  > span {
+    padding-left: 10px;
+    // border: 1px solid red;
+  }
+  .el-button {
+    width: 100px;
+    font-size: 16px;
+    color: white;
+    // background: #036da1;
+    // height: 40px;
+  }
+}
+
+.Button_Group {
+  // border: 1px solid red;
+  padding: 20px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  .SearchGroup {
+    margin: 10px;
+    // border: 1px solid red;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    // margin-bottom: 20px;
+    .el-input {
+      width: 180px;
+      margin-right: 20px;
+    }
+    .el-select {
+      // width: 200px;
+      // border: 1px solid red;
+    }
+  }
+  .ButtonGroup {
+    margin: 10px;
+    &.top {
+      margin-top: 20px;
+    }
+    // border: 1px solid red;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    // border: 1px solid red;
+  }
+}
+
+//首页以及应用管理
+#ForgetPwd,
+#ChangePwd,
+#Index,
+#ApplyManage {
+  width: 100%;
+  // position: fixed;
+  // top: 61px;
+  .Index_item_true,
+  .Index_item_fasle {
+    margin: 0 auto;
+    // max-width: 1200px;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    // border: 1px solid red;
+    .title {
+      font-size: 22px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      > span {
+        letter-spacing: 5px;
+        font-size: 16px;
+        margin-top: 8px;
+        display: inline-block;
+        position: relative;
+        color: #999999;
+        &::after {
+          border-radius: 2px;
+          bottom: -10px;
+          left: 50%;
+          margin-left: -20px;
+          position: absolute;
+          content: "";
+          background: #036da1;
+          width: 40px;
+          height: 4px;
+        }
+      }
+    }
+    // .el-tabs {
+    //   border: 1px solid red;
+    // }
+    nav {
+      margin-top: 30px;
+      // border: 1px solid red;
+      ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        .addLi {
+          color: #1096ff;
+        }
+        li {
+          cursor: pointer;
+          color: #999999;
+          font-size: 20px;
+          &.active {
+            position: relative;
+            font-weight: bold;
+            color: #036da1;
+            &::after {
+              position: absolute;
+              bottom: -10px;
+              left: 50%;
+              margin-left: -17px;
+              content: "";
+              width: 34px;
+              height: 4px;
+              background: rgba(3, 109, 161, 1);
+              border-radius: 2px;
+            }
+          }
+          &:hover {
+            color: #036da1;
+          }
+        }
+      }
+    }
+    .APP {
+      padding: 40px 0;
+      margin-top: 48px;
+      // border: 1px solid red;
+      background: #f3f9fb;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      // justify-content: space-between;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .item {
+        padding: 10px 0;
+        cursor: pointer;
+        margin: 18px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        // border: 1px solid red;
+        // flex: 200px 0;
+        -webkit-box-flex: 164px;
+        -ms-flex: 164px 0;
+        flex: 164px 0;
+        img {
+          display: block;
+          width: 100px;
+          height: 100px;
+        }
+        // .item_button > .el-button {
+        //   visibility: hidden;
+        // }
+        // &:hover {
+        //   background: rgba(255, 255, 255, 1);
+        //   -webkit-box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+        //   box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+        //   border-radius: 10px;
+        //   -webkit-transition: all 0.8s;
+        //   transition: all 0.8s;
+        // }
+        // &:hover .item_button > .el-button {
+        //   visibility: visible;
+        // }
+        .item_name {
+          font-weight: 500;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  // .Index_item_fasle {
+  //   margin-top: 60px;
+  // }
+  // border: 1px solid red;
+}
+#Index {
+  .form {
+    text-align: center;
+    img {
+      width: 130px;
+      height: 130px;
+    }
+    .sub_title {
+      color: #333333;
+    }
+  }
+  .desc {
+    margin-top: 20px !important;
+    color: #999999;
+    width: 410px;
+    margin: 0 auto;
+  }
+  .f_fd {
+    width: 130px;
+    height: 45px;
+    background: rgba(36, 139, 189, 1);
+    border-radius: 23px;
+  }
+}
+//系统设置
+#SettingLog {
+  // border: 1px solid red;
+  nav {
+    background: #ecf7fc;
+    margin-bottom: 35px;
+    // border: 1px solid red;
+    ul {
+      margin: 0 auto;
+      // max-width: 1200px;
+      -ms-flex-pack: distribute;
+      justify-content: space-around;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      li {
+        padding: 30px 0 20px 0;
+        cursor: pointer;
+        // font-size: 20px;
+        color: #999999;
+        &:hover {
+          color: #036da1;
+        }
+
+        &.active {
+          position: relative;
+          font-weight: bold;
+          color: #036da1;
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            margin-left: -17px;
+            width: 34px;
+            height: 4px;
+            border-radius: 4px;
+            background: rgba(3, 109, 161, 1);
+          }
+        }
+      }
+    }
+  }
+  section {
+    margin: 0 auto;
+    // max-width: 1200px;
+    margin-bottom: 35px;
+    .el-table {
+      margin-top: 20px;
+    }
+    .tip {
+      border-bottom: 1px solid #036da1;
+      span {
+        padding: 10px 25px;
+        border-radius: 12px 10px 0px 0px;
+        background: #036da1;
+        color: white;
+        font-size: 15px;
+        display: inline-block;
+      }
+    }
+    .item_Container {
+      margin-top: 30px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      // justify-content: space-between;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .item {
+        padding: 10px 0;
+        cursor: pointer;
+        margin: 18px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        // border: 1px solid red;
+        // flex: 200px 0;
+        -webkit-box-flex: 164px;
+        -ms-flex: 164px 0;
+        flex: 164px 0;
+        img {
+          display: block;
+          width: 100px;
+          height: 100px;
+        }
+        &:hover {
+          background: rgba(255, 255, 255, 1);
+          -webkit-box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+          box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+          border-radius: 10px;
+          -webkit-transition: all 0.8s;
+          transition: all 0.8s;
+        }
+      }
+    }
+    // border: 1px solid red;
+  }
+}
+
+//系统设置模块
+#NavHome {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  .el-menu-vertical-demo {
+    // text-align: center;
+    width: 245px;
+    .is-opened {
+      .el-submenu__title {
+        // background: #036da1 !important;
+        color: #036da1;
+      }
+    }
+    .is-active {
+      background: #036da1 !important;
+      color: white !important;
+    }
+  }
+  .section {
+    padding: 20px 10px;
+    width: 100%;
+    // height: 100%;
+    .content {
+      width: 100%;
+      margin-top: 20px;
+      height: calc(100% - 14px);
+    }
+  }
+}
+
+//学校信息配置
+#SchoolInfoConfig {
+  width: 100%;
+  height: 100%;
+  > section {
+    padding: 35px 0;
+    .el-form {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      // border: 1px solid red;
+      // width: 100%;
+      .el-form-item {
+        // border: 1px solid red;
+        -webkit-box-flex: 50%;
+        -ms-flex: 50% 0;
+        flex: 50% 0;
+      }
+    }
+    .el-form-div {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      // border: 1px solid red;
+      // width: 100%;
+      .el-form-item-div {
+        font-size: 14px;
+        .label-div {
+          text-align: right;
+          float: left;
+          font-size: 14px;
+          color: #606266;
+          line-height: 40px;
+          padding: 0 12px 0 0;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          font-size: inherit;
+          text-align: right;
+          width: 180px;
+        }
+        .input-div {
+          width: calc(100% - 180px);
+          padding: 0 15px;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          color: #606266;
+          font-size: inherit;
+        }
+        margin-bottom: 22px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        height: 40px;
+        // border: 1px solid red;
+        -webkit-box-flex: 50%;
+        -ms-flex: 50% 0;
+        flex: 50% 0;
+      }
+    }
+  }
+  // border: 1px solid red;
+}
+
+//学年设置
+#GradeConfig {
+}
+
+#StudentsManagement {
+  .tip {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+
+//批量调班
+#BatchChangeShift {
+  .section {
+    padding: 30px 0;
+    .select {
+      text-align: center;
+      padding: 0 0 20px;
+    }
+  }
+  .sub_title {
+    color: #000000;
+    border-left: 4px solid #036da1;
+    padding: 0 10px;
+  }
+  .btn {
+    text-align: center;
+    padding: 30px 0;
+  }
+}
+
+#ForgetPwd,
+#ChangePwd {
+  nav {
+    width: 300px;
+    margin: 0 auto;
+  }
+  .section {
+    padding: 38px;
+    .content {
+      width: 952px;
+      // height:516px;
+      padding: 60px 70px 0;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 1);
+      -webkit-box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+              box-shadow: 0px 0px 10px 0px rgba(198, 220, 231, 0.81);
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+      .form {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        .lt {
+          -webkit-box-flex: 3;
+              -ms-flex: 3;
+                  flex: 3;
+          img {
+            width: 237px;
+            height: 259px;
+          }
+        }
+        .rt {
+          -webkit-box-flex: 7;
+              -ms-flex: 7;
+                  flex: 7;
+          .el-form-item {
+            margin: 26px;
+          }
+          .input {
+            width: 370px;
+          }
+          .input:nth-child(2) {
+            margin-top: 16px;
+          }
+        }
+      }
+      .footer {
+        text-align: center;
+        padding-bottom: 60px;
+      }
+      .btn {
+        width: 320px;
+        height: 50px;
+        background: rgba(36, 139, 189, 1);
+        border-radius: 25px;
+        margin-top: 30px;
+      }
+      .title {
+        font-size: 22px;
+        font-family: MicrosoftYaHei;
+        font-weight: 400;
+        color: rgba(3, 109, 161, 1);
+        line-height: 24px;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
+
+#ForgetPwd {
+  .Index_item_true {
+    margin-top: 0;
+  }
+  .header {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    width: 100%;
+    height: 60px;
+    //   border: 1px solid red;
+    background: #006190;
+    color: white;
+    > div {
+      font-size: 22px;
+      // flex: 1;
+    }
+    .h_rt {
+      cursor: pointer;
+    }
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+      vertical-align: top;
+      display: inline-block;
+    }
+    span {
+      font-size: 16px;
+    }
+  }
+  .f_lt {
+    img {
+      width: 154px !important;
+      height: 116px !important;
+      float: right;
+    }
+  }
+  .title {
+    color: #006190;
+    margin: 80px 0 0;
+    font-weight: bold;
+  }
+  .tit {
+    margin: 20px 0 0;
+  }
+  .encrypted {
+    background: #ecf7fc;
+    width: 100%;
+    height: 60px;
+    font-size: 18px;
+    line-height: 60px;
+    text-align: center;
+    margin-top: 60px;
+    img {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+    }
+  }
+  .section_tip {
+    text-align: center;
+    margin-top: 100px;
+    .title {
+      margin: 0;
+      color: #036da1;
+    }
+    main {
+      width: 628px;
+      height: 56px;
+      font-size: 20px;
+      font-family: MicrosoftYaHei;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 36px;
+      margin: 20px auto 380px;
+    }
+    .btn {
+      width: 320px;
+      height: 50px;
+      background: rgba(36, 139, 189, 1);
+      border-radius: 25px;
+      margin-top: 30px;
+    }
+  }
+}
+
+// 年级升级
+#GradeUpgrade {
+  .warp {
+    border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    margin: 30px 0;
+    .schoolYear {
+      width: 400px;
+      margin: 30px auto;
+      text-align: center;
+      p {
+        display: inline-block;
+      }
+      span {
+        color: #248bbd;
+        font-weight: Bold;
+      }
+    }
+    .title {
+      margin-left: 30px;
+    }
+    .content {
+      padding: 10px 20px 30px;
+      margin-top: 0;
+      .tip {
+        color: #ff0000;
+        padding: 10px 0 10px 0;
+      }
+      p {
+        padding: 10px 0;
+      }
+      .hint {
+        padding-left: 20px;
+      }
+    }
+  }
+  .btn {
+    text-align: center;
+    padding: 30px 0;
+    button {
+      background: #248bbd;
+      border: none;
+    }
+  }
+}

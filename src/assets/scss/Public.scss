@@ -1,0 +1,238 @@
+/*
+ * File: Public.scss
+ * Project: scienceschool
+ * File Created: Tuesday, 21st May 2019 2:16:17 pm
+ * Author: LGH (1415684247@QQ.COM)
+ * -----
+ * Last Modified: Thursday, 4th July 2019 6:00:47 pm
+ * Modified By: LGH (1415684247@QQ.COM>)
+ * -----
+ * Copyright 2019 - 2019 Your Company, Your Company
+ */
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  // font-size: 18px;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+* {
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/ /*早期浏览器*/
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.PageDiv {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.Filter_GroupContianer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  // border: 1px solid red;
+  .Search_Group {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    .el-input {
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+    }
+    .el-row {
+      margin-left: 20px;
+      .line {
+        line-height: 40px;
+        text-align: center;
+      }
+      .el-input {
+        margin: 0;
+      }
+    }
+    .el-input + .el-input,
+    .el-select {
+      margin-left: 20px;
+      // border: 1px solid red;
+    }
+  }
+}
+
+//公共颜色按钮
+.red {
+  cursor: pointer !important;
+  color: #f56c6c !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #f77878 !important;
+  }
+}
+.bule {
+  cursor: pointer !important;
+  // position: relative;
+  // padding: 0;
+  color: #0486fe !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #3c9ffb !important;
+  }
+}
+.green {
+  color: #67c23a !important;
+  cursor: pointer !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #7cd153 !important;
+  }
+}
+.yellow {
+  cursor: pointer !important;
+  color: #ffde2a !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #ffe55e !important;
+  }
+}
+.orange {
+  cursor: pointer !important;
+  color: #f5a623 !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #f6b344 !important;
+  }
+}
+.white {
+  cursor: pointer !important;
+  color: #f5f6fa !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #e4e7ed !important;
+  }
+}
+
+.gray {
+  cursor: pointer !important;
+  color: #909399 !important;
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer !important;
+    color: #a1a4aa !important;
+  }
+}
+.cancelUser {
+  border: 1px solid #dcdfe6 !important;
+  background: white !important;
+  font-size: 18px !important;
+  color: black !important;
+}
+.complete {
+  border: none !important;
+  color: black !important;
+  font-size: 18px !important;
+  background: #ffde2a !important;
+}
+
+//公用按钮背景
+.buleBg {
+  color: #000000 !important;
+  border: none !important;
+  background: #0486fe !important;
+  &:hover,
+  &:focus,
+  &:active {
+    color: #000000 !important;
+    border: none !important;
+    background: #3c9ffb !important;
+  }
+}
+.greenBg {
+  border: none !important;
+  background: #67c23a !important;
+  color: #000000 !important;
+  &:hover,
+  &:focus,
+  &:active {
+    color: #000000 !important;
+    border: none !important;
+    background: #7cd153 !important;
+  }
+}
+.yellowBg {
+  color: #000000 !important;
+  border: none !important;
+  background: #ffde2a !important;
+  &:hover,
+  &:focus,
+  &:active {
+    border: none !important;
+    color: #000000 !important;
+    background: #ffe55e !important;
+  }
+}
+.redBg {
+  border: none !important;
+  background: #f56c6c !important;
+  color: #000000 !important;
+  &:hover,
+  &:focus,
+  &:active {
+    border: none !important;
+    color: #000000 !important;
+    background: #f77878 !important;
+  }
+}
+.orangeBg {
+  border: none !important;
+  background: #f5a623 !important;
+  color: #000000 !important;
+  &:hover,
+  &:focus,
+  &:active {
+    border: none !important;
+    color: #000000 !important;
+    background: #f6b344 !important;
+  }
+}
+.whiteBg {
+  // border: none;
+  color: #000000 !important;
+  background: white !important;
+  &:hover,
+  &:focus,
+  &:active {
+    color: #000000 !important;
+    // border: none;
+    background: #ecf5ff !important;
+  }
+}

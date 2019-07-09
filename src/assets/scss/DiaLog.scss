@@ -1,0 +1,653 @@
+/*
+ * File: DiaLog.scss
+ * Project: scienceschool
+ * File Created: Monday, 27th May 2019 4:36:13 pm
+ * Author: LGH (1415684247@QQ.COM)
+ * -----
+ * Last Modified: Monday, 8th July 2019 10:05:12 am
+ * Modified By: LGH (1415684247@QQ.COM>)
+ * -----
+ * Copyright 2019 - 2019 Your Company, Your Company
+ */
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px !important;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
+.DiaLogTitle {
+  // border: 1px solid red;
+  font-weight: 400;
+  font-size: 28px;
+  color: #036da1;
+}
+.el-dialog__close {
+  font-size: 28px;
+}
+.dialog-footer {
+  text-align: center;
+}
+.el-dialog {
+  .el-select {
+    width: 100%;
+  }
+}
+.el-input .el-input__count .el-input__count-inner {
+  background: transparent;
+}
+
+#AppDialog {
+  // .el-dialog__header {
+  //   font-size: 28px;
+  //   color: #036da1;
+  // }
+  // .el-dialog__close {
+  //   font-size: 28px;
+  // }
+  .dialog-footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    text-align: center;
+    // border: 1px solid red;
+    .el-button {
+      width: 150px;
+      border-radius: 20px;
+      font-size: 22px;
+      background: #248bbd;
+    }
+  }
+  .form {
+    margin: 0 auto;
+    width: 80%;
+    label {
+      font-size: 20px;
+    }
+    .tip {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+#TipDialog {
+  // .el-dialog__header {
+  //   font-size: 28px;
+  //   color: #036da1;
+  // }
+  // .el-dialog__close {
+  //   font-size: 28px;
+  // }
+  .dialog-footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    text-align: center;
+    // border: 1px solid red;
+    .el-button {
+      width: 150px;
+      border-radius: 20px;
+      font-size: 22px;
+      background: #248bbd;
+    }
+  }
+  .form {
+    padding: 10px 20px;
+    text-align: center;
+    .icon {
+      // text-align: center;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .tip {
+      // text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #999;
+    }
+  }
+}
+
+#GraderConfigDialog {
+  .dialog-footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    text-align: center;
+    // border: 1px solid red;
+    .el-button {
+      width: 150px;
+      border-radius: 20px;
+      font-size: 22px;
+      background: #248bbd;
+    }
+  }
+  .form {
+    margin: 0 auto;
+    width: 600px;
+    .line {
+      text-align: center;
+    }
+    .subhead {
+      margin: 0 0 22px 20px;
+      font-size: 20px;
+      color: #248bbd;
+      font-weight: bold;
+    }
+  }
+}
+
+#GradeSettingSearchDiaLog {
+  .form {
+    .input {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    .el-table {
+      margin-top: 20px;
+    }
+  }
+}
+
+#TeacherGroupConfigInfoDiaLog {
+  .form {
+    .Title_Group {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      .Title {
+        // flex: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 16px;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        span {
+          display: inline-block;
+        }
+      }
+    }
+    .Mark {
+      font-size: 16px;
+      padding: 20px 0;
+    }
+  }
+}
+
+#TeacherGroupConfigDiaLog {
+  .flex {
+    .el-form-item__content {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      .el-button {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+.innerDiaLog {
+  .el-tree {
+    padding: 20px 0;
+  }
+  .input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 15px;
+  }
+  .tag {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    height: 60px;
+    .el-tag {
+      margin: 0 10px;
+      -webkit-box-flex: 1;
+      -ms-flex: auto 0;
+      flex: auto 0;
+    }
+    // padding: 40px 0;
+  }
+}
+#StudentInfoDiaLog {
+  // border: 1px solid red;
+  .title {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 18px;
+    span {
+      padding: 0 20px;
+      &.active {
+        font-weight: bold;
+        color: #036da1;
+      }
+    }
+  }
+  .form {
+    .el-form {
+      .inputGroup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        .inputTitle {
+          .Title {
+            font-size: 24px;
+            font-weight: bold;
+          }
+          padding: 0 5%;
+          margin-bottom: 20px;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-flex: 100%;
+          -ms-flex: 100% 0;
+          flex: 100% 0;
+        }
+        .el-form-item {
+          -webkit-box-flex: 50%;
+          -ms-flex: 50% 0;
+          flex: 50% 0;
+          &.WidthMax {
+            -webkit-box-flex: 100%;
+            -ms-flex: 100%;
+            flex: 100%;
+            .el-form-item__content {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+            }
+            // width: 100%;
+          }
+          .el-button {
+            width: 178px;
+          }
+          // border: 1px solid red;
+        }
+
+        .el-date-editor,
+        .el-select {
+          width: 100%;
+        }
+      }
+
+      // .item {
+      //   flex: 1;
+      // }
+    }
+  }
+}
+
+#TeacherInfoDiaLog {
+  .title {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 18px;
+
+    span {
+      cursor: pointer;
+      padding: 0 20px;
+      &.active {
+        font-weight: bold;
+        color: #036da1;
+      }
+    }
+  }
+  h2 {
+    text-align: center;
+    padding: 0 0 40px;
+    color: #036da1;
+  }
+  .form {
+    .el-form {
+      .inputGroup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        .el-form-item {
+          -webkit-box-flex: 50%;
+          -ms-flex: 50% 0;
+          flex: 50% 0;
+          &.WidthMax {
+            -webkit-box-flex: 100%;
+            -ms-flex: 100%;
+            flex: 100%;
+            .el-form-item__content {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+            }
+          }
+          .el-button {
+            width: 178px;
+          }
+        }
+
+        .el-date-editor,
+        .el-select {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .formContent {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    .formLeft {
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding: 0 40px 0 0;
+    }
+    .formRight {
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding: 0 40px 0 0;
+      .imgInfo {
+        width: 220px;
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 40px;
+        img {
+          width: 100%;
+          height: 250px;
+          vertical-align: middle;
+        }
+        .btn {
+          width: 80px;
+          height: 40px;
+        }
+      }
+    }
+  }
+  .remark {
+    padding: 0 40px 0 0;
+  }
+}
+
+#GradeCurriculumDiaLog {
+  .form {
+    .el-form {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .el-form-item {
+        -webkit-box-flex: 50%;
+        -ms-flex: 50%;
+        flex: 50%;
+      }
+      .formIpt {
+        input {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+#ClassCurriculumDiaLog {
+  .flex {
+    .el-form-item__content {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      .el-button {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+#LeadingIn {
+  .main {
+    .button {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header {
+      .upload-demo {
+        text-align: center;
+        .el-upload-list {
+          > li {
+            margin: 0 auto;
+            width: 80%;
+          }
+        }
+      }
+    }
+    .tip {
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+  }
+}
+
+#ForgetPwdDiaLog {
+  .form {
+    text-align: center;
+    img {
+      width: 130px;
+      height: 130px;
+    }
+    .sub_title {
+      color: #333333;
+    }
+  }
+  .desc {
+    margin-top: 20px;
+    color: #999999;
+  }
+  .f_fd {
+    width: 130px;
+    height: 45px;
+    background: rgba(36, 139, 189, 1);
+    border-radius: 23px;
+  }
+}
+
+#ParentsManagementDiaLog {
+  .form {
+    .el-form {
+      .block {
+        // margin: 0 auto;
+        width: 600px;
+      }
+      // display: -webkit-box;
+      // display: -ms-flexbox;
+      // display: flex;
+      // -ms-flex-wrap: wrap;
+      // flex-wrap: wrap;
+      // -webkit-box-align: center;
+      // -ms-flex-align: center;
+      // align-items: center;
+      // .el-form-item {
+      // -webkit-box-flex: 50%;
+      // -ms-flex: 50% 0;
+      // flex: 50% 0;
+      // &.WidthMax {
+      // -webkit-box-flex: 100%;
+      // -ms-flex: 100%;
+      // flex: 100%;
+      // width: 100%;
+      // }
+      // .el-button {
+      // width: 178px;
+      // }
+      // border: 1px solid red;
+      // }
+      // .el-date-editor,
+      // .el-select {
+      //   width: 100%;
+      // }
+    }
+  }
+}
+
+#GraderConfigDialog,
+#ClassConfigDiaLog,
+#JobConfigDiaLog,
+#TeacherGroupConfigDiaLog,
+#ClassCurriculumDiaLog,
+#RoleManagementDiaLog,
+#WorkerManagementDiaLog,
+#ChangePwDiaLog {
+  .form {
+    width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.treeHeight {
+  height: 300px;
+}
+
+// .el-dialog{
+//     border: 1px solid red;
+// }
+#SchoolRollChangeDiaLog {
+  .title {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    span {
+      padding: 0 20px;
+      &.active {
+        color: #036da1;
+      }
+    }
+  }
+  .sub_title {
+    color: #036da1;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  .form {
+    .el-form {
+      .inputGroup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        .el-form-item {
+          -webkit-box-flex: 50%;
+          -ms-flex: 50% 0;
+          flex: 50% 0;
+          &.WidthMax {
+            -webkit-box-flex: 100%;
+            -ms-flex: 100%;
+            flex: 100%;
+          }
+          .el-button {
+            width: 178px;
+          }
+        }
+        .el-date-editor,
+        .el-select {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+#RoleManagementAppointDiaLog {
+  .form {
+    .transfer {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      margin-top: 40px;
+      .el-transfer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .el-transfer-panel {
+          flex: 1;
+        }
+      }
+    }
+    .filter {
+      display: flex;
+      .filter_item {
+        padding: 0 20px;
+        display: flex;
+        &.speial {
+          flex: 1;
+          .el-button {
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+
+    // text-align: center;
+  }
+}
