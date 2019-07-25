@@ -4,7 +4,7 @@
  * File Created: Tuesday, 21st May 2019 2:19:32 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:39:06 pm
+ * Last Modified: Wednesday, 10th July 2019 10:30:00 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -27,6 +27,9 @@
   color: white;
   > div {
     font-size: 22px;
+    img{
+      display: block;
+    }
     // flex: 1;
   }
   .el-menu {
@@ -52,7 +55,9 @@
   // bottom: 0;
   // position: fixed;
   // bottom: 0;
-  background: #006190;
+  // background: #006190;
+  background: url("/static/img/img_hone_bg.png") no-repeat;
+  background-size: cover;
   font-size: 14px;
   color: white;
   .Footer_Container {

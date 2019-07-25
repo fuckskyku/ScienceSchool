@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 27th June 2019 9:40:17 am
+ * Last Modified: Tuesday, 9th July 2019 1:21:21 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -34,9 +34,9 @@
               <el-button style="width:80px;" type="primary" @click="innerVisible = true">选择</el-button>
               
             </el-form-item>
-            <el-form-item label="在校状态：" prop="zxzt">
+            <el-form-item label="在校状态：" prop="studyStatus">
               <el-radio
-                v-model="form.zxzt"
+                v-model="form.studyStatus"
                 v-for="item in Dictionary.stateSchool"
                 :key="item.val"
                 :label="item.val"
@@ -96,12 +96,13 @@
         <main class="form">
           <div style="margin-bottom:10px;">
             <el-input
-              placeholder="请输入学生"
-              v-model="tempName"
+              placeholder="请输入学生姓名/身份证"
+              v-model="keyWord"
+              @change="searchStudent(keyWord)"
               clearable
               style="width:92%"
             ></el-input>
-            <el-button slot="append" @click="searchStudent(tempName)" style="float:right" icon="el-icon-search"></el-button>
+            <el-button slot="append" @click="searchStudent(keyWord)" style="float:right" icon="el-icon-search"></el-button>
             <!-- <el-button type="primary" @click="search" style="float:right">搜索</el-button> -->
           </div>
           
@@ -114,19 +115,34 @@
             :cell-style="{textAlign:'center',color:'#606266',padding:'4px 0'}"
           >
             <el-table-column :show-overflow-tooltip="true" label width="55">
-            <template slot-scope="scope">
-              <el-radio v-model="radio" @change="handleSelectionChange(scope.row)" :label="scope.row.id">&nbsp</el-radio>
-            </template>
-          </el-table-column>
+              <template slot-scope="scope">
+                <el-radio v-model="radio" @change="handleSelectionChange(scope.row)" :label="scope.row.id">&nbsp;</el-radio>
+              </template>
+            </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="学籍号" prop="xjh"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="姓名" prop="name"></el-table-column>
+            <el-table-column :show-overflow-tooltip="true" label="所属校区" prop="subschoolName">
+              <!-- <template slot-scope="scope">{{scope.row.subschoolName == null ? '-暂无数据-' : scope.row.subschoolName}}</template> -->
+            </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="性别" prop="sex">
               <template slot-scope="scope">{{scope.row.sex == 1 ? '男' : '女'}}</template>
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="年级" prop="gradeName"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="班级" prop="className"></el-table-column>
           </el-table>
-          <page :tabObj.sync="tableObj" :filterObj="filter" name="StudentPage"></page>
+          <div class="PageDiv">
+            <el-pagination
+              background
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="tableObj.pageNo"
+              :page-sizes="[10, 20, 40,60,80,100]"
+              :page-size="tableObj.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableObj.totalCount"
+            ></el-pagination>
+          </div>
+          <!-- <page :tabObj.sync="tableObj" :filterObj="filter" name="StudentPage"></page> -->
         </main>
         <div slot="footer" class="dialog-footer" style="text-align:center">
           <!-- <el-button @click="cancel()">取 消</el-button> -->
@@ -162,11 +178,12 @@ export default {
       studentOptions: [],
       gradeOptions: [],
       classOptions: [],
-      form: {name: '',zxzt: 0,studentId: ''},
-      tempName: '',
+      form: {name: '',studyStatus: 0,studentId: ''},
+      keyWord: '',
       tableObj: [{}],
       filter: {
-        schoolYearId: this.Dictionary.SchoolYearDefault
+        schoolYearId: this.Dictionary.SchoolYearDefault,
+        pageSize: 10
       },
       radio: ''
     };
@@ -178,11 +195,21 @@ export default {
     innerVisible(val) {
       if(val) {
         this.tempName = ''
+        this.tableObj.data.map(item =>{
+          if(this.form.name == item.name){
+            this.radio = item.id
+          }
+        })
+      }else{
+        this.keyWord = ""
       }
     },
     Show(val) {
       this.dialogVisible = val;
-      this.init();
+      if(!val){
+        this.radio = ''
+      }
+      this.init(this.filter);
     },
     Edit(val) {
       if (val) {
@@ -194,14 +221,19 @@ export default {
     }
   },
   created() {
-    this.init();
+    
   },
   methods: {
-    init() {
-      StudentPage().then(res => {
+    init(obj) {
+      StudentPage(obj).then(res => {
         //console.log(res.data.data.data)
         this.studentOptions = res.data.data.data
         this.tableObj = res.data.data
+        this.tableObj.data.map(item =>{
+          if(this.form.name == item.name){
+            this.radio = item.id
+          }
+        })
       })
       GradeList({
         schoolYearId: this.Dictionary.SchoolYearDefault
@@ -221,6 +253,16 @@ export default {
         this.classOptions = res.data.data
       })
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+      console.log(val)
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      // this.filter.pageNo = val
+      this.init(this.filter);
+    },
     confirm() {
       // this.form.name == this.tempName; 
       this.form.name = JSON.parse(JSON.stringify(this.tempName))
@@ -236,13 +278,13 @@ export default {
       this.innerVisible = false
     },
     searchStudent(val) {
-      // StudentPage({
-
-      // }).then(res => {
-      //   console.log(res.data.data.data)
-      //   this.studentOptions = res.data.data.data
-      //   this.tableObj = res.data.data
-      // })
+      StudentPage({
+        keyWord: val
+      }).then(res => {
+        console.log(res.data.data.data)
+        this.studentOptions = res.data.data.data
+        this.tableObj = res.data.data
+      })
     },
     handleSelectionChange(val) {
       this.tempName = val.name

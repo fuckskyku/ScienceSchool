@@ -110,7 +110,7 @@ export default {
       axios({
         method: "get",
         url,
-        data: param,
+        params: param,
         headers: {
           // Authorization: TOKEN,
           "Content-Type": "multipart/form-data"
@@ -195,6 +195,7 @@ export default {
         method: "post",
         url,
         data: param,
+        // params: param,
         headers: {
           // Authorization: TOKEN,
           "Content-Type": "multipart/form-data"
@@ -229,6 +230,7 @@ export default {
         method: "post",
         url,
         data: param,
+        // params: param,
         headers: {
           // Authorization: TOKEN,
           "Content-Type": "multipart/form-data"

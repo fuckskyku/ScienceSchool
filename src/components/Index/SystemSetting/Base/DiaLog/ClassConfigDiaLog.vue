@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 10:15:47 am
+ * Last Modified: Friday, 12th July 2019 1:37:35 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,11 +18,11 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Edit?'编辑班级信息':'新增班级信息'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Edit?'编辑班级信息':'添加班级信息'}}</span>
       <main class="form">
         <el-form :model="form" ref="form" :rules="Verification.Class" label-width="120px">
           <el-form-item label="学年：" required>
-            <el-input v-model="Dictionary.SchoolYearNameDefault" :disabled="true" v-if="!Edit"></el-input>
+            <el-input v-model="InfoObj.SchoolYearNameDefault" :disabled="true" v-if="!Edit"></el-input>
             <el-input v-model="form.schoolYearName" :disabled="true" v-if="Edit"></el-input>
             <!-- <input type="text"  value=""> -->
             <!-- <el-select v-model="form.enteryear" placeholder="请选择学年" @change="filterChange">
@@ -133,12 +133,13 @@ export default {
   watch: {
     Show(val) {
       this.dialogVisible = val;
+      this.init();
     },
     Edit(val) {
       if (val) {
         this.InfoObj.isMajor = Number(this.InfoObj.isMajor);
-        console.log(this.InfoObj);
         this.form = this.InfoObj;
+        // this.init();
       }
     }
   },
@@ -147,7 +148,12 @@ export default {
   },
   methods: {
     init() {
-      GradeList({ schoolYearId: this.Dictionary.SchoolYearDefault }).then(
+      this.Dictionary.SchoolYearOptions.map(item => {
+        if(item.id == this.InfoObj.schoolYearId) {
+          this.InfoObj.SchoolYearNameDefault = item.name
+        }
+      })
+      GradeList({ schoolYearId: this.InfoObj.schoolYearId }).then(
         res => {
           this.gradeOptions = res.data.data;
         }

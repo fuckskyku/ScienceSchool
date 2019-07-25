@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Sunday, 30th June 2019 2:13:18 pm
+ * Last Modified: Friday, 12th July 2019 9:19:00 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,7 +18,7 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Edit?'编辑学年信息':'新增学年信息'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Edit?'编辑学年信息':'添加学年信息'}}</span>
       <main class="form">
         <el-form :model="form" ref="form" :rules="Verification.SchoolYearVer" label-width="120px">
           <el-form-item label="学年名称：" prop="name">

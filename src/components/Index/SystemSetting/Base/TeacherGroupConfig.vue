@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 2:13:40 pm
+ * Last Modified: Wednesday, 10th July 2019 5:19:15 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -32,7 +32,7 @@
             type="primary"
             @click="PopShowFlag=true"
             v-if="isAuthority('sys:teacherGroup:create')"
-          >新建教研组</el-button>
+          >添加教研组</el-button>
           <el-button
             type="danger"
             @click="del(false)"
@@ -76,7 +76,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="TeacherGroupPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj="filter" name="TeacherGroupPage"></page> -->
     </section>
     <DiaLog
       :Show.sync="PopShowFlag"
@@ -115,7 +127,16 @@ export default {
         this.tableObj = res.data.data;
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     del(id) {
@@ -137,6 +158,7 @@ export default {
             TeacherGroupDelete({
               ids: id ? id : this.delTableList.toString()
             }).then(res => {
+              this.delTableList = [];
               this.init(this.filter);
             });
           }.bind(this)
@@ -159,7 +181,7 @@ export default {
       });
     },
     Update() {
-      this.init();
+      this.init(this.filter);
     }
   },
   components: {

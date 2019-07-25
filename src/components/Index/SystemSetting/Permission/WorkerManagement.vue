@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 4:38:56 pm
+ * Last Modified: Wednesday, 10th July 2019 5:33:46 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -94,7 +94,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="UserTeacherUserPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj.sync="filter" name="UserTeacherUserPage"></page> -->
     </section>
     <DiaLog
       :Show.sync="PopShowFlag"
@@ -110,7 +122,7 @@
       :Info.sync="PopTeacherInfoInfo"
       :InfoObj="PopTeacherInfoObj"
     ></TeacherInfoDiaLog>
-
+    
     <DiaLogChange :Show.sync="PopShowFlagChange" :InfoObj="PopPwdInfoObj"></DiaLogChange>
     <LeadingIn
       :Show.sync="PopShowLeadingIn"
@@ -147,7 +159,7 @@ export default {
       PopTeacherInfoEdit: false,
       PopTeacherInfoInfo: false,
       PopTeacherInfoObj: {},
-      filter: {},
+      filter: {pageNo:1,pageSize:10},
       tableObj: [{}],
       delTableList: [],
       keyWords: "",
@@ -156,19 +168,32 @@ export default {
     };
   },
   created() {
-    this.init();
+    this.init(this.filter);
   },
   methods: {
     init(obj) {
       UserTeacherUserPage(obj).then(res => {
-        this.tableObj = res.data.data;
+        this.$nextTick(()=>{
+          this.tableObj = res.data.data;
+        })
+        console.log("UserTeacherUserPage",this.tableObj )
       });
     },
     changePwd(row) {
       this.PopPwdInfoObj = row;
       this.PopShowFlagChange = true;
     },
-    filterChange() {
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+      console.log(val)
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
+    filterChange(val) {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     del(id) {
@@ -190,6 +215,7 @@ export default {
             UserDelete({
               userIds: id ? id : this.delTableList.toString()
             }).then(res => {
+              this.delTableList = [];
               this.init(this.filter);
             });
           }.bind(this)
@@ -219,6 +245,9 @@ export default {
     },
 
     disabled(id, flag) {
+      if(id!=null) {
+        this.delTableList.push(id)
+      }
       if (!this.delTableList.length) {
         this.elInfo("请选择需要操作的数据", "warning");
       } else {
@@ -226,6 +255,8 @@ export default {
           disabled: flag,
           userIds: id ? id : this.delTableList.toString()
         }).then(res => {
+          this.delTableUserIdList = [];
+          this.delTableList = [];
           this.elInfo(res.data.message, "success");
           this.init(this.filter);
         });
@@ -233,7 +264,7 @@ export default {
     },
 
     Update() {
-      this.init();
+      this.init(this.filter);
     },
     dowload() {
       TeacherExportTeacherUserData().then(res => {});

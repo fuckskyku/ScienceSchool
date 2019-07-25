@@ -4,14 +4,14 @@
  * File Created: Tuesday, 21st May 2019 3:29:46 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:39:26 pm
+ * Last Modified: Friday, 12th July 2019 2:54:54 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
  */
 <template>
   <main id="Index" :style="{'minHeight':H+'px'}">
-    <div class="Index_item_true MAXWIDTH">
+    <!-- <div class="Index_item_true MAXWIDTH">
       <div class="title">
         <strong>统一账户的应用</strong>
         <span>UNIFIED</span>
@@ -26,9 +26,9 @@
           >{{item.tableName}}</li>
         </ul>
       </nav>
+
       <article class="APP">
         <div class="item" v-for="(item,index) in AppYes" :key="index" @click="open(item.url)">
-          <!-- <el-image :src="item.logo" fit="cover"></el-image> -->
           <el-image :src="item.logo" fit="cover"></el-image>
           <span class="item_name">{{item.name}}</span>
         </div>
@@ -51,7 +51,6 @@
       </nav>
       <article class="APP">
         <div class="item" v-for="(item,index) in AppNo" :key="index" @click="open(item.url)">
-          <!-- <el-image :src="item.logo" fit="cover"></el-image> -->
           <el-image :src="item.logo" fit="cover"></el-image>
           <span class="item_name">{{item.name}}</span>
         </div>
@@ -76,12 +75,47 @@
       </el-dialog>
       <DiaLog :Show.sync="PopShowFlag"></DiaLog>
       <DiaLogTip :Show.sync="PopShowTipFlag"></DiaLogTip>
+    </div>-->
+
+    <div class="Index_item_true">
+      <div class="Title">
+        <img src="/static/img/Index_true.png" alt />
+      </div>
+
+      <el-scrollbar :native="false" id="section">
+        <div class="Index_item_container">
+          <div class="item" v-for="(item,index) in AppYes" :key="index" @click="open(item.url)">
+            <el-image :src="item.logo" fit="cover"></el-image>
+            <span class="item_name">{{item.name}}</span>
+          </div>
+        </div>
+      </el-scrollbar>
+    </div>
+
+    <div class="Index_item_false">
+      <nav class="nav">
+        <ul>
+          <li
+            v-for="(item,index) in FormObjItem.IndexTabTag"
+            :class="{'active':NoVal==item.val}"
+            :key="index"
+            @click="TabNoClick(item.val)"
+          >{{item.label}}</li>
+        </ul>
+      </nav>
+      <el-scrollbar :native="false" id="section">
+        <div class="Index_item_container">
+          <div class="item" v-for="(item,index) in AppNo" :key="index" @click="open(item.url)">
+            <el-image :src="item.logo" fit="cover"></el-image>
+            <span class="item_name">{{item.name}}</span>
+          </div>
+        </div>
+      </el-scrollbar>
     </div>
   </main>
 </template>
 
 <script>
-import DiaLog from "../Dialog/AppDiaLog";
 import DiaLogTip from "../Dialog/PublicTipDialLog";
 import {
   UniformAccountList,
@@ -118,9 +152,10 @@ export default {
           }
         }
       });
-      UniformAccountList().then(res => {
+
+      UniformAccountList({ appType: this.YesVal }).then(res => {
         this.TabListYes = res.data.data;
-        this.YesVal = res.data.data[0].appType;
+        this.YesVal = res.data.data.length ? res.data.data[0].appType : 5;
         this.selectType(this.YesVal, true);
       });
       this.selectType(this.NoVal, false);
@@ -132,9 +167,15 @@ export default {
           this.AppYes = res.data.data;
         });
       } else {
-        NonUniformAccountList({ appType: val }).then(res => {
-          this.AppNo = res.data.data;
-        });
+        if (val == 1) {
+          UniformAccountList({ appType: val }).then(res => {
+            this.AppNo = res.data.data;
+          });
+        } else {
+          NonUniformAccountList({ appType: val }).then(res => {
+            this.AppNo = res.data.data;
+          });
+        }
       }
       // NonUniformAccountList({ appType: val }).then(res => {
       //   if (flag) {
@@ -163,7 +204,7 @@ export default {
       window.open("http://" + url);
     }
   },
-  components: { DiaLog, DiaLogTip }
+  components: { DiaLogTip }
 };
 </script>
 

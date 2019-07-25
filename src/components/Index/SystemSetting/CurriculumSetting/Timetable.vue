@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:53:20 pm
+ * Last Modified: Wednesday, 10th July 2019 4:59:40 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -58,7 +58,7 @@
             type="primary"
             @click="PopShowLeadingIn = true;"
             v-if="isAuthority('sys:subejctTeacher:import')"
-          >导入任课表</el-button>
+          >导入课程表</el-button>
         </div>
       </div>
       <el-table
@@ -140,7 +140,7 @@ export default {
         semester: 1,
         gradeId: "",
         classId: "",
-        pageSize: 1000
+        pageSize: 10000
       },
       tableObj: [{}]
     };

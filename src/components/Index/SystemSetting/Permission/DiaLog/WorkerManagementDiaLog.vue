@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 27th June 2019 9:40:17 am
+ * Last Modified: Friday, 12th July 2019 9:19:24 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,9 +18,15 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Edit?'编辑职工':'新增职工'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Edit?'编辑职工':'添加职工'}}</span>
       <main class="form">
-        <el-form :model="form" ref="form" :rules="Verification.WorkerManagement" label-width="120px" :disabled="Info">
+        <el-form
+          :model="form"
+          ref="form"
+          :rules="Verification.WorkerManagement"
+          label-width="120px"
+          :disabled="Info"
+        >
           <el-form-item label="用户名：" prop="userName">
             <el-input placeholder="请输入用户名" v-model="form.userName"></el-input>
           </el-form-item>
@@ -44,8 +50,8 @@
             >{{tag.roleName}}</el-tag>
             <el-button type="primary" @click="selectRole()">选择</el-button>
           </el-form-item>
-          <el-form-item label="身份证号：">
-            <el-input placeholder="请输入身份证号" v-model="form.idCard"></el-input>
+          <el-form-item label="身份证件号：">
+            <el-input placeholder="请输入身份证件号" v-model="form.idCard"></el-input>
           </el-form-item>
           <el-form-item label="邮箱：">
             <el-input placeholder="请输入邮箱" v-model="form.email"></el-input>
@@ -61,7 +67,12 @@
       >
         <main class="form">
           <div style="margin-bottom:10px;">
-            <el-input placeholder="请输入角色" v-model="form.name" @change=" searchRole(form.name)" clearable></el-input>
+            <el-input
+              placeholder="请输入角色"
+              v-model="form.name"
+              @change=" searchRole(form.name)"
+              clearable
+            ></el-input>
             <!-- <el-button type="primary" @click="search" style="float:right">搜索</el-button> -->
           </div>
           <div class="tag" style="margin-bottom:20px">
@@ -84,9 +95,9 @@
             @select="handleSelectionChange"
             @select-all="handleSelectionChange"
           >
-            <el-table-column  :show-overflow-tooltip="true"   type="selection" width="55"></el-table-column  >
-            <el-table-column  :show-overflow-tooltip="true"   label="角色名称" prop="roleName"></el-table-column  >
-            <el-table-column  :show-overflow-tooltip="true"   label="角色描述" prop="remark"></el-table-column  >
+            <el-table-column :show-overflow-tooltip="true" type="selection" width="55"></el-table-column>
+            <el-table-column :show-overflow-tooltip="true" label="角色名称" prop="roleName"></el-table-column>
+            <el-table-column :show-overflow-tooltip="true" label="角色描述" prop="remark"></el-table-column>
           </el-table>
         </main>
         <div slot="footer" class="dialog-footer" style="text-align:center">
@@ -117,13 +128,13 @@ export default {
       innerVisible: false,
       form: {
         userRoleOuts: [],
-        roleStatus: ''
+        roleStatus: ""
       },
       relationData: [],
       roleTags: [],
       RroleTags: [],
       tableObj: [],
-      type: 'add'
+      type: "add"
     };
   },
   mounted() {
@@ -156,9 +167,7 @@ export default {
     Edit(val) {
       if (val) {
         this.init();
-       
       } else {
-        
       }
     }
   },
@@ -170,9 +179,9 @@ export default {
         this.form = res.data.data;
         // this.roleTags = this.form.userRoleOuts;
         this.RroleTags = this.form.userRoleOuts;
-        console.log('this.form',this.form)
+        console.log("this.form", this.form);
       });
-       this.type == ''
+      this.type == "";
     },
     searchRole(val) {
       // 获取角色列表
@@ -185,11 +194,11 @@ export default {
       });
     },
     Save() {
-      this.form.userRoleOuts = this.RroleTags
-      if(this.form.userRoleOuts.length != 0){
-        this.$set(this.form,"roleStatus",'1')
-      }else{
-        this.$set(this.form,"roleStatus",'')
+      this.form.userRoleOuts = this.RroleTags;
+      if (this.form.userRoleOuts.length != 0) {
+        this.$set(this.form, "roleStatus", "1");
+      } else {
+        this.$set(this.form, "roleStatus", "");
       }
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -202,24 +211,23 @@ export default {
           return false;
         }
       });
-      
     },
     handleSelectionChange(row) {
       this.roleTags = row;
       this.roleTags.map(item => {
-        item.roleId = item.id
-      })
+        item.roleId = item.id;
+      });
       // console.log('this.roleTags',this.roleTags)
     },
     selectRole(row) {
-      this.type = "add"
+      this.type = "add";
       this.innerVisible = true;
       this.checkRole();
     },
     confirmRole() {
       [...this.RroleTags] = this.roleTags;
       this.innerVisible = false;
-      console.log('this.RroleTags',this.RroleTags)
+      console.log("this.RroleTags", this.RroleTags);
     },
     checkRole() {
       var that = this;
@@ -235,13 +243,13 @@ export default {
     },
     tagClose2(val) {
       // val.id = val.roleId
-      console.log(val,'val',this.RroleTags)
+      console.log(val, "val", this.RroleTags);
       // console.log(this.form.userRoleOuts)
       this.RroleTags.splice(this.RroleTags.indexOf(val), 1);
     },
     tagClose(val) {
       // console.log(val,'val',val.id)
-      val.id = val.roleId
+      val.id = val.roleId;
       var that = this;
       this.roleTags.splice(this.roleTags.indexOf(val), 1);
       this.tableObj.map((item, index) => {

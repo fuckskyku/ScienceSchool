@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 5:19:53 pm
+ * Last Modified: Friday, 12th July 2019 1:54:09 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,14 +18,14 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Info?'学生信息':Edit?'编辑学生信息':'新增学生信息'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Info?'学生信息':Edit?'编辑学生信息':'添加学生信息'}}</span>
       <main class="form">
         <div class="title">
-          <span :class="{'active':step==1}" @click="step=1">基本信息</span>
+          <span :class="{'active':step==1}" @click="Step(1)">基本信息</span>
           <i>-</i>
-          <span :class="{'active':step==2}" @click="step=2">家庭情况</span>
+          <span :class="{'active':step==2}" @click="Step(2)">家庭情况</span>
           <i>-</i>
-          <span :class="{'active':step==3}" @click="step=3">个人情况</span>
+          <span :class="{'active':step==3}" @click="Step(3)">个人情况</span>
         </div>
         <el-form
           :model="form"
@@ -48,11 +48,11 @@
               </el-upload>
               <el-button
                 type="primary"
-                @click="exportPhoto"
+                @click="exportPhoto(form.xjh)"
                 style="align-self: flex-end;height: 40px;margin-bottom: 15px;margin-left: 10px;"
-              >导出相片</el-button>
+              >导出照片</el-button>
+              <!-- <a href="http://pic41.nipic.com/20140508/18609517_112216473140_2.jpg" download target="_blank" style="color:#ffffff">导出相片</a> -->
             </el-form-item>
-
             <el-form-item label="卡号：">
               <el-input v-model="form.icCard" placeholder="请输入卡号"></el-input>
             </el-form-item>
@@ -79,6 +79,18 @@
             <el-form-item label="出生日期：">
               <el-date-picker v-model="form.birthDay" type="date" placeholder="选择日期"></el-date-picker>
             </el-form-item>
+
+            <el-form-item label="校区：" prop="xqh">
+              <el-select v-model="form.xqh" placeholder="请选择校区" @change="selCampus">
+                <el-option
+                  v-for="item in Dictionary.SubSchoolOptions"
+                  :label="item.name"
+                  :value="item.subschoolCode"
+                  :key="item.subschoolCode"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="学年：" prop="schoolYearId">
               <el-select
                 v-model="filter.schoolYearId"
@@ -93,7 +105,6 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-
             <el-form-item label="年级：" prop="gradeId">
               <el-select v-model="form.gradeId" placeholder="请选择年级" @change="GradeChange">
                 <el-option
@@ -197,16 +208,9 @@
             >
               <div class="inputTitle">
                 <div class="Title">家庭成员</div>
-                <el-button type="text" class="red" @click="delParent(index)">删除</el-button>
+                <el-button type="text" class="red" v-if="!Info" @click="delParent(index)">删除</el-button>
               </div>
-              <!-- <el-form-item>
-                <el-button type="text" class="red" @click="delParent(index)">删除</el-button>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="text" class="red" @click="delParent(index)">删除</el-button>
-              </el-form-item>-->
-
-              <el-form-item label="成员姓名：" :prop="'studentParentPinList.'+index+'.parentName'">
+              <el-form-item label="成员姓名：" :prop="'studentParentPinList.'+index+'.parentName'" :rules="Verification.Student.parentName">
                 <el-input v-model="studentParentPinList.parentName" placeholder="请输入成员姓名"></el-input>
               </el-form-item>
               <el-form-item label="证件类型：" :prop="'studentParentPinList.'+index+'.idCardType'">
@@ -222,11 +226,21 @@
               <el-form-item
                 label="身份证件号："
                 :prop="'studentParentPinList.'+index+'.idCard'"
-                :rules="Verification.Student.idCard"
               >
                 <el-input v-model="studentParentPinList.idCard" placeholder="请输入证件号"></el-input>
               </el-form-item>
-              <el-form-item label="成员关系：" :prop="'studentParentPinList.'+index+'.gx'">
+              <el-form-item
+                label="性别："
+                :prop="'studentParentPinList.'+index+'.sex'"
+              >
+                <el-radio
+                v-model="studentParentPinList.sex"
+                v-for="item in Dictionary.Sex"
+                :key="item.val"
+                :label="item.val"
+              >{{item.label}}</el-radio>
+              </el-form-item>
+              <el-form-item label="成员关系：" :prop="'studentParentPinList.'+index+'.gx'" :rules="Verification.Student.relation">
                 <el-select v-model="studentParentPinList.gx" placeholder="请选择关系">
                   <el-option
                     v-for="item in Dictionary.DomesticRelation"
@@ -242,16 +256,21 @@
               <el-form-item
                 label="联系电话："
                 :prop="'studentParentPinList.'+index+'.mobile'"
-                :rules="Verification.Student.tel"
+                :rules="Verification.Student.mobile"
               >
                 <el-input v-model="studentParentPinList.mobile" placeholder="请输入联系电话"></el-input>
               </el-form-item>
               <el-form-item label="是否监护人：" :prop="'studentParentPinList.'+index+'.isPrimary'">
-                <el-radio v-model="studentParentPinList.isPrimary" :label="true">是</el-radio>
-                <el-radio v-model="studentParentPinList.isPrimary" :label="false">否</el-radio>
+                <el-radio-group
+                  v-model="studentParentPinList.isPrimary"
+                  @change="radioChange($event,index)"
+                >
+                  <el-radio :label="true">是</el-radio>
+                  <el-radio :label="false">否</el-radio>
+                </el-radio-group>
               </el-form-item>
 
-              <el-form-item>
+              <el-form-item v-if="!Info">
                 <img
                   src="/static/img/add.png"
                   style="width:50px;height:50px;"
@@ -330,9 +349,9 @@
         </el-form>
       </main>
       <div slot="footer" class="dialog-footer" v-if="!Info">
-        <el-button type="primary" v-if="step==2||step==3" @click="back">上一步</el-button>
+        <!-- <el-button type="primary" v-if="step==2||step==3" @click="back">上一步</el-button> -->
         <!-- <el-button type="primary" v-if="step==2" @click="addDomain">添加成员</el-button> -->
-        <el-button type="primary" @click="Save">确 定</el-button>
+        <el-button type="primary" @click="Save">{{step==3?'确 定':'下一步'}}</el-button>
       </div>
     </el-dialog>
   </main>
@@ -363,14 +382,16 @@ export default {
         schoolYearId: this.Dictionary.SchoolYearDefault
       },
       form: {
+        xqh: this.Dictionary.SubSchoolNameDefault,
         sex: 1,
         isStay: false,
         isClock: true,
         isNation: false,
         studyType: "1",
-        enterType: "0",
+        enterType: 0,
         studentParentPinList: [
           {
+            sex: 1,
             isPrimary: false
           }
         ]
@@ -379,6 +400,7 @@ export default {
   },
   watch: {
     Show(val) {
+      this.form.enterType = 0,
       this.dialogVisible = val;
       // this.init();
     },
@@ -399,15 +421,30 @@ export default {
           item.rowStatus = "update";
         });
         this.form = res.data.data;
+        this.form.enterType = Number(this.form.enterType);
+        this.form.xqh = this.form.xqh? this.form.xqh: this.Dictionary.SubSchoolNameDefault;
         this.imageUrl = this.form.faceImg;
         this.filter.schoolYearId = this.form.schoolYearId;
         this.SchoolYearChange(this.form.schoolYearId);
         this.GradeChange(this.form.gradeId);
-        this.$set(
-          this.form,
-          "studentParentPinList",
-          this.form.studentParentOuts
-        );
+        if (this.form.studentParentOuts !=""){
+          this.$set(
+            this.form,
+            "studentParentPinList",
+            this.form.studentParentOuts
+          );
+        }else{
+          var objList = [{
+            isPrimary: this.Info?0:false,
+            sex: this.Info?0:1,
+          }];
+          this.$set(
+            this.form,
+            "studentParentPinList",
+            objList
+          );
+        }
+        console.log("this.form",this.form)
       });
     },
     init() {
@@ -415,6 +452,17 @@ export default {
         schoolYearId: this.filter.schoolYearId
       }).then(res => {
         this.gradeOptions = res.data.data;
+      });
+      // this.$refs["form"].clearValidate();
+    },
+    Step(type) {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.step = type;
+          this.$refs["form"].clearValidate();
+        } else {
+          return false;
+        }
       });
     },
     Save() {
@@ -450,7 +498,16 @@ export default {
         });
       }
     },
-    exportPhoto() {},
+    exportPhoto(val) {
+      var $Href = this.form.faceImg
+      var downloadElement = document.createElement("a");
+        downloadElement.href = $Href;
+        downloadElement.target = "_blank"
+        downloadElement.download = val; //下载后文件名
+        document.body.appendChild(downloadElement);
+        downloadElement.click(); //点击下载
+        document.body.removeChild(downloadElement); //下载完成移除元素
+    },
     back() {
       if (this.step == 3) {
         this.step = 2;
@@ -459,15 +516,28 @@ export default {
       }
     },
     addDomain() {
+      console.log('Info',this.Info)
       this.form.studentParentPinList.push({
+        sex: 1,
         isPrimary: false,
         rowStatus: "create"
       });
+      console.log('studentParentPinList',this.form.studentParentPinList)
     },
     delParent(index) {
       this.form.studentParentPinList[index].rowStatus = "delete";
     },
+    selCampus(val) {
+      if (!this.Info && !this.Edit) {
+        this.$set(this.form, "classId", "");
+      }
+      this.GradeChange(this.form.gradeId);
+    },
     SchoolYearChange(val) {
+      if (!this.Info && !this.Edit) {
+        this.form.gradeId = "";
+        this.form.classId = "";
+      }
       GradeList({
         schoolYearId: val
       }).then(res => {
@@ -475,7 +545,11 @@ export default {
       });
     },
     GradeChange(val) {
-      ClassList({ gradeId: val }).then(res => {
+      if (!this.Info && !this.Edit) {
+        this.$set(this.form, "classId", "");
+      }
+      // this.form.classId = "";
+      ClassList({ gradeId: val,subschoolCode:this.form.xqh }).then(res => {
         this.classOptions = res.data.data;
       });
     },
@@ -502,14 +576,25 @@ export default {
       this.$emit("Update");
       this.step = 1;
       this.form = {
+        xqh: this.Dictionary.SubSchoolNameDefault,
         sex: 1,
         isStay: false,
         isClock: true,
         isNation: false,
         studyType: "1",
         enterType: "0",
-        studentParentPinList: [{ isPrimary: false }]
+        studentParentPinList: [{ isPrimary: false,sex:1 }]
       };
+    },
+    radioChange(val, index) {
+      if (val) {
+        this.form.studentParentPinList.forEach((item, itemIndex) => {
+          if (index != itemIndex) {
+            item.isPrimary = false;
+          }
+        });
+      }
+      // console.log(val,index);
     }
   }
 };

@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:49:59 pm
+ * Last Modified: Friday, 12th July 2019 9:19:48 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -48,26 +48,16 @@
             type="primary"
             @click="PopShowFlag=true"
             v-if="isAuthority('sys:student:create')"
-          >新增</el-button>
+          >添加</el-button>
           <el-button type="primary" @click="dowload" v-if="isAuthority('sys:student:export')">导出</el-button>
           <el-button type="primary" @click="importTMP" v-if="isAuthority('sys:student:import')">导入</el-button>
           <!-- <el-button type="primary">照片导出</el-button> -->
-          <el-upload
-            class="upload-demo"
-            action="/api/student/uploadBetchImg"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :show-file-list="false"
-            name="files"
-            multiple
-          >
-            <!-- <el-button size="small" type="primary">点击上传</el-button> -->
-            <el-button
-              style="margin:0 15px"
-              type="primary"
-              v-if="isAuthority('sys:student:importImg')"
-            >照片导入</el-button>
-          </el-upload>
+          <el-button
+            @click="PopShowStudentLeadingIn=true"
+            style="margin:0 15px"
+            type="primary"
+            v-if="isAuthority('sys:student:importImg')"
+          >照片导入</el-button>
         </div>
       </div>
       <div class="checkGroup" style="margin-bottom:20px;">
@@ -142,10 +132,12 @@
       @Update="Update"
       :Href="'/static/Dowload/学生信息导入模板.xlsx'"
     ></LeadingIn>
+    <StudentLeadingIn :Show.sync="PopShowStudentLeadingIn" :Type="1"></StudentLeadingIn>
   </main>
 </template>
 <script>
 import DiaLog from "./DiaLog/StudentInfoDiaLog";
+import StudentLeadingIn from "./DiaLog/StudnetLeadingIn";
 import ChangePwDiaLog from "../../../Templet/ChangePwDiaLog";
 import LeadingIn from "../../../Templet/LeadingIn";
 import {
@@ -162,6 +154,7 @@ export default {
       testflat: true,
       PopShowFlag: false,
       PopShowLeadingIn: false,
+      PopShowStudentLeadingIn: false,
       PopEdit: false,
       PopInfo: false,
       PopShowPwFlag: false,
@@ -182,6 +175,7 @@ export default {
   },
   methods: {
     handleCheckedChange(val) {
+      delete this.filter.pageNo;
       this.$set(
         this.filter,
         "noCard",
@@ -207,6 +201,7 @@ export default {
       });
     },
     SchoolYearChange() {
+      delete this.filter.pageNo;
       this.filter.gradeId = "";
       this.filter.classId = "";
       this.classOptions = [];
@@ -216,6 +211,7 @@ export default {
       this.init(this.filter);
     },
     GradeChange() {
+      delete this.filter.pageNo;
       this.filter.classId = "";
       ClassList(this.filter).then(res => {
         this.classOptions = res.data.data;
@@ -223,6 +219,7 @@ export default {
       this.init(this.filter);
     },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     changePwd(row) {
@@ -282,7 +279,8 @@ export default {
   components: {
     DiaLog,
     ChangePwDiaLog,
-    LeadingIn
+    LeadingIn,
+    StudentLeadingIn
   }
 };
 </script>

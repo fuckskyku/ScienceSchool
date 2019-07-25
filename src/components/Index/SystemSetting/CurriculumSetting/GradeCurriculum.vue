@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:53:46 pm
+ * Last Modified: Tuesday, 9th July 2019 11:09:48 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -64,10 +64,10 @@
             type="primary"
             @click="PopShowFlag=true"
             v-if="isAuthority('sys:gradeSubject:create')"
-          >添加年级</el-button>
+          >添加</el-button>
         </div>
       </div>
-
+      
       <el-table
         :data="tableObj.data"
         border
@@ -101,7 +101,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="GradeSubjectPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj="filter" name="GradeSubjectPage"></page> -->
     </section>
     <DiaLog :Show.sync="PopShowFlag" :Edit.sync="PopEdit" :InfoObj="PopInfoObj" @Update="Update"></DiaLog>
   </main>
@@ -135,6 +147,7 @@ export default {
       });
     },
     SchoolYearChange(val) {
+      delete this.filter.pageNo;
       this.filter.semester = "";
       this.filter.gradeId = "";
       GradeList({ schoolYearId: val }).then(res => {
@@ -142,7 +155,16 @@ export default {
       });
       this.init(this.filter);
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     del(id) {

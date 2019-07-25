@@ -23,10 +23,10 @@
         <el-form :model="form" ref="form" :rules="rules" label-width="120px">
           <el-form-item label="用户名：" prop>{{InfoObj.userName}}</el-form-item>
           <el-form-item label="新密码：" prop="newPw">
-            <el-input placeholder="请输入密码" show-password v-model="form.newPw"></el-input>
+            <el-input placeholder="请输入密码" maxlength="16" show-password v-model="form.newPw"></el-input>
           </el-form-item>
           <el-form-item label="确定密码：" prop="okPw">
-            <el-input placeholder="请输入密码" show-password v-model="form.okPw"></el-input>
+            <el-input placeholder="请输入密码" maxlength="16" show-password v-model="form.okPw"></el-input>
           </el-form-item>
         </el-form>
       </main>
@@ -52,11 +52,11 @@ export default {
         if (!value) {
           callback(new Error("请输入密码"));
         } else if (
-          !value.match(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,16}$/)
+          !value.match(/^(?![\d]+$)(?![a-zA-Z]+$)(?![!#$%^&*]+$)[\da-zA-Z!#$%^&*]{8,16}$/)
         ) {
           return callback(
             new Error(
-              "密码至少8位或8位以上的字母和数字，至少一个字母和一个数字"
+              "密码为8~16位数字、字母、!@#$%^&*其中两种"
             )
           );
         } else {

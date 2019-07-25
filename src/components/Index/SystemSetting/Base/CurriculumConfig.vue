@@ -18,6 +18,14 @@
     <section>
       <div class="Button_Group">
         <div class="SearchGroup">
+          <!-- <el-select v-model="filter.timeType" placeholder="请选择校区" @change="filterChange">
+            <el-option
+              v-for="item in Dictionary.Season"
+              :key="item.val"
+              :label="item.label"
+              :value="item.val"
+            ></el-option>
+          </el-select> -->
           <el-select v-model="filter.timeType" placeholder="请选择时令" @change="filterChange">
             <el-option
               v-for="item in Dictionary.Season"
@@ -239,6 +247,7 @@ export default {
       // console.log(this.tableObj);
       this.tableObj.push({
         timeType: this.filter.timeType,
+        // isValid: this.defaultTimeType == this.filter.timeType ? true : false,
         isValid: this.defaultTimeType == this.filter.timeType ? 1 : 0,
         edit: true,
         addFlag: false

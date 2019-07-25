@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 4:36:13 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 10:05:12 am
+ * Last Modified: Friday, 12th July 2019 10:04:38 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -471,8 +471,9 @@
         text-align: center;
         .el-upload-list {
           > li {
-            margin: 0 auto;
-            width: 80%;
+            margin: 10px;
+            width: 20%;
+            display: inline-block;
           }
         }
       }
@@ -553,7 +554,8 @@
 #ClassCurriculumDiaLog,
 #RoleManagementDiaLog,
 #WorkerManagementDiaLog,
-#ChangePwDiaLog {
+#ChangePwDiaLog,
+#SubjectConfigDiaLog {
   .form {
     width: 600px;
     margin: 0 auto;
@@ -651,3 +653,6 @@
     // text-align: center;
   }
 }
+
+
+

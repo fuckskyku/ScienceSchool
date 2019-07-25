@@ -20,7 +20,7 @@
     >
       <main class="form">
         <div>
-          <img src="/static/img/img_password_tip.png" alt="">
+          <img src="/static/img/img_home_tip.png" alt="">
           <p class="sub_title">系统提示</p>
         </div>
         <p class="desc">{{form.confirm == true && form.active == 2 ? '密保问题回答正确，现在您可以重新设置密码了！': form.confirm == false && form.active == 2 ? '密保问题回答错误，请检查后重新提交' : form.confirm == true && form.active == 3 ? '您已重新设置了密码，立即去登录吧！' : ''}}</p>

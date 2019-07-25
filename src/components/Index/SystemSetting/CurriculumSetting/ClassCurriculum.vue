@@ -94,7 +94,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="SubjectTeacherPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj.sync="filter" ref="msg" name="SubjectTeacherPage"></page> -->
     </section>
     <DiaLog :Show.sync="PopShowFlag" :Edit.sync="PopEdit" :InfoObj="PopInfoObj" @Update="Update"></DiaLog>
     <LeadingIn
@@ -124,10 +136,12 @@ export default {
       PopShowFlag: false,
       PopShowLeadingIn: false,
       PopEdit: false,
+      PageEdit: false,
       PopInfoObj: {},
       gradeOptions: [],
       classOptions: [],
       filter: {
+        pageSize: 10,
         schoolYearId: this.Dictionary.SchoolYearDefault
       },
       tableObj: [{}]
@@ -135,7 +149,7 @@ export default {
   },
   created() {
     this.SchoolYearChange(this.filter.schoolYearId);
-    this.init();
+    this.init(this.filter);
   },
   methods: {
     init(obj) {
@@ -158,23 +172,40 @@ export default {
       this.filter.gradeId = "";
       this.filter.semester = "";
       this.filter.classId = "";
-
+      this.PageEdit = true
       this.classOptions = [];
       GradeList({
         schoolYearId: val
       }).then(res => {
+        delete this.filter.pageNo;
         this.gradeOptions = res.data.data;
         this.init(this.filter);
       });
     },
     GradeChange(val) {
-      this.filter.classId = "";
+      this.PageEdit = true
+      // this.$refs.msg.getMessage(this.PageEdit)
       ClassList({ gradeId: val }).then(res => {
+        delete this.filter.pageNo;
+        this.filter.classId = "";
         this.classOptions = res.data.data;
+        console.log('Grade.filter',this.filter)
         this.init(this.filter);
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange(val) {
+      delete this.filter.pageNo;
+      this.PageEdit = true
+      // this.$refs.msg.getMessage(this.PageEdit)
+      // console.log('class.filter',this.filter)
       this.init(this.filter);
     },
     edit(row) {
@@ -184,6 +215,9 @@ export default {
     },
     dowload() {
       SubjectTeacherExportData(this.filter).then(res => {});
+    },
+    pageUpdate() {
+      alert(1)
     },
     Update() {
       this.init(this.filter);

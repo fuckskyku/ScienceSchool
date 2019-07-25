@@ -24,7 +24,7 @@
     <section v-if="InterfaceState.SettingLogState=='登入'" class="MAXWIDTH" style="max-width:1400px;">
       <div class="Filter_GroupContianer">
         <div class="Search_Group">
-          <el-input v-model="filter.userName" placeholder="账号" clearable @change="filterChange"></el-input>
+          <el-input v-model="filter.userName" placeholder="账户" clearable @change="filterChange"></el-input>
           <el-input v-model="filter.idCard" placeholder="身份证号码" clearable @change="filterChange"></el-input>
           <!-- <el-input v-model="filter.Name" placeholder="姓名" clearable></el-input> -->
           <!-- <el-input v-model="filter.Role" placeholder="角色" clearable></el-input> -->
@@ -78,6 +78,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableData.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableData.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableData.totalCount"
+        ></el-pagination>
+      </div>
     </section>
     <section v-if="InterfaceState.SettingLogState=='登出'" class="MAXWIDTH" style="max-width:1400px;">
       <div class="Filter_GroupContianer">
@@ -129,12 +141,24 @@
         <el-table-column :show-overflow-tooltip="true" prop="idCard" label="身份证"></el-table-column>
         <!-- <el-table-column :show-overflow-tooltip="true" prop="address" label="姓名"></el-table-column> -->
         <!-- <el-table-column :show-overflow-tooltip="true" prop="address" label="角色"></el-table-column> -->
-        <el-table-column :show-overflow-tooltip="true" prop="createTime" label="登入时间">
+        <el-table-column :show-overflow-tooltip="true" prop="createTime" label="退出时间">
           <template slot-scope="scope">
             <span>{{new Date(scope.row.createTime).format('yyyy-MM-dd hh:mm:ss')}}</span>
           </template>
         </el-table-column>
       </el-table>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableData.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableData.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableData.totalCount"
+        ></el-pagination>
+      </div>
     </section>
     <section
       v-if="InterfaceState.SettingLogState=='look'"
@@ -155,7 +179,9 @@
           <span>{{item.name}}</span>
         </div>
       </div>
+      
     </section>
+    
   </main>
 </template>
 <script>
@@ -180,6 +206,7 @@ export default {
   },
   created() {
     this.init({ logType: "登入" });
+    
   },
   computed: {
     ...mapState(["InterfaceState"])
@@ -195,6 +222,14 @@ export default {
         this.AppLogList = res.data.data.data;
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     //点击nav切换方法
     navCilck(val) {
       this.setSettingLogState(val); //提交Vuex保存方法
@@ -204,6 +239,7 @@ export default {
     },
     //过滤方法
     filterChange() {
+      delete this.filter.pageNo;
       this.$set(this.filter, "logType", this.InterfaceState.SettingLogState);
       this.init(this.filter);
     },

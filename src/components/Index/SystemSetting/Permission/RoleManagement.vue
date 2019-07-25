@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 9:43:08 am
+ * Last Modified: Wednesday, 10th July 2019 5:19:15 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -45,7 +45,7 @@
         @select-all="checked"
       >
         <el-table-column :show-overflow-tooltip="true" type="selection" width="55"></el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="授权对象" prop="classId"></el-table-column>
+        <!-- <el-table-column :show-overflow-tooltip="true" label="授权对象" prop="classId"></el-table-column> -->
         <el-table-column :show-overflow-tooltip="true" label="角色名称" prop="roleName"></el-table-column>
         <el-table-column :show-overflow-tooltip="true" label="创建时间" prop="createTime">
           <template
@@ -70,7 +70,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="RolePage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj.sync="filter" name="RolePage"></page> -->
     </section>
     <DiaLog :Show.sync="PopShowFlag" :Edit.sync="PopEdit" :InfoObj="PopInfoObj" @Update="Update"></DiaLog>
     <DiaLogAppoint :Show.sync="PopShowAppointFlag" :InfoObj="PopInfoObj" :Edit.sync="PopEditTwo"></DiaLogAppoint>
@@ -123,8 +135,9 @@ export default {
           id ? null : "是否批量删除已选数据",
           "warning",
           function() {
-            RoleDelete({ roleId: id ? id : this.delTableList.toString() }).then(
+            RoleDelete({ ids: id ? id : this.delTableList.toString() }).then(
               res => {
+                this.delTableList = [];
                 this.init(this.filter);
               }
             );
@@ -134,8 +147,16 @@ export default {
     changePwd() {
       this.PopShowPwFlag = true;
     },
-
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
 
@@ -161,7 +182,7 @@ export default {
     },
 
     Update() {
-      this.init();
+      this.init(this.filter);
     }
   },
   components: {

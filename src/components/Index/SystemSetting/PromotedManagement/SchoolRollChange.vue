@@ -62,12 +62,15 @@ export default {
       PopInfoObj: {},
       ParameterObj: {},
       type: "Class",
-      filter: {},
+      filter: {
+        schoolYearId: this.Dictionary.SchoolYearDefault,
+        pageSize: 10
+      },
       tableObj: [{}]
     };
   },
   created() {
-    this.init();
+    this.init(this.filter);
   },
   methods: {
     init() {
@@ -84,7 +87,7 @@ export default {
       this.tableObj.push({});
     },
     Update() {
-      this.init();
+      this.init(this.filter);
     }
   },
   components: {

@@ -16,7 +16,7 @@
       enter-active-class="animated flipInX"
       leave-active-class="animated flipOutX"
     >
-      <Header v-if="ScrollShow"></Header>
+      <Header v-show="ScrollShow"></Header>
     </transition>
     <!-- <main id="Home"> -->
     <!-- <el-scrollbar :native="false" id="section"> -->

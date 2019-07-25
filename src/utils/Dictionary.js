@@ -4,7 +4,7 @@
  * File Created: Wednesday, 5th June 2019 11:20:23 am
  * Author: LGH {val:1415684247@QQ.COM}
  * -----
- * Last Modified: Monday, 8th July 2019 10:20:50 am
+ * Last Modified: Friday, 12th July 2019 1:50:11 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -76,12 +76,12 @@ const data = {
 
   //学历
   Schooling: [
-    { val: "0", label: "研究生" },
-    { val: "10", label: "大学本科" },
-    { val: "20", label: "大学专科和专科学校" },
-    { val: "30", label: "中等专业学校或中等技术学校" },
-    { val: "40", label: "技工学校" },
-    { val: "50", label: "高中" }
+    { val: "10", label: "研究生" },
+    { val: "20", label: "大学本科" },
+    { val: "30", label: "大学专科" },
+    { val: "40", label: "中等职业教育" },
+    { val: "91", label: "中等师范" },
+    { val: "90", label: "其他" }
   ],
 
   //班级类别
@@ -222,6 +222,7 @@ const data = {
 
   //最高学位层次
   AcademicDegree: [
+    { val: "1", label: "名誉博士" },
     { val: "2", label: "博士" },
     { val: "3", label: "硕士" },
     { val: "4", label: "学士" },
@@ -294,6 +295,7 @@ const data = {
   GradeOptions: [],
   ClassOptions: [],
   SubSchoolOptions: [],
+  SubSchoolNameDefault: "",
   SubjectOptions: [],
   //学年
   DictionaryInit: function() {
@@ -310,6 +312,7 @@ const data = {
     //校区
     SubSchoolList().then(res => {
       data.SubSchoolOptions = res.data.data;
+      data.SubSchoolNameDefault = res.data.data[0].subschoolCode;
     });
 
     //学科

@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 9:59:05 am
+ * Last Modified: Wednesday, 10th July 2019 4:34:53 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -47,6 +47,7 @@
             v-model="appointList"
             :titles="['人员列表', '已选择']"
             :button-texts="['到左边', '到右边']"
+            @change="transfer"
             :data="data"
           ></el-transfer>
         </div>
@@ -93,6 +94,7 @@ import {
   RoleBetchSetTeacherRole,
   RoleTeacherRoleList
 } from "^/api/api";
+import { constants } from "fs";
 export default {
   inject: ["reload"],
   props: {
@@ -106,12 +108,15 @@ export default {
       innerVisible: false,
       data: [],
       appointList: [],
+      delAppointList: [],
+      tempAppintList: [],
+      addAppintList: [],
       tree: [],
       treeText: "",
       typeFlag: Boolean,
       form: {},
       filter: {
-        pageSize: 1000
+        pageSize: 10000
       },
       defaultProps: {
         children: "childTreeList",
@@ -132,6 +137,7 @@ export default {
         // console.log(this.form);
         RoleTeacherRoleList({ id: this.InfoObj.id }).then(res => {
           this.appointList = res.data.data;
+          this.tempAppintList = res.data.data;
         });
         this.init();
       }
@@ -149,7 +155,7 @@ export default {
         cities.forEach((city, index) => {
           data.push({
             label: city.name,
-            key: city.id
+            key: city.userId
             // pinyin: pinyin[index]
           });
         });
@@ -158,14 +164,17 @@ export default {
     },
     Save() {
       // if (this.appointList.length) {
+        
       RoleBetchSetTeacherRole({
         id: this.InfoObj.id,
-        teacherIdList: this.appointList
+        teacherAddList: this.addAppintList,
+        teacherDelList: this.delAppointList
       }).then(res => {
         // console.log(res);
         this.elInfo(res.data.message, "success");
         this.closeDialog();
       });
+
       // } else {
       // this.elInfo("至少选择一个进行操作", "warning");
       // }
@@ -197,7 +206,30 @@ export default {
         }
       }
     },
-    filterChange() {},
+
+    transfer(val) {
+      let delList = [];
+
+      this.tempAppintList.forEach(item => {
+        if (val.indexOf(item) == -1) {
+          delList.push(item);
+        }
+      });
+      this.delAppointList = delList.splice(0, delList.length);
+
+      let addList = [];
+
+      val.forEach(item => {
+        if (this.tempAppintList.indexOf(item) == -1) {
+          addList.push(item);
+        }
+      });
+      this.addAppintList = addList.splice(0, addList.length);
+    },
+
+    filterChange() {
+      this.init(this.filter);
+    },
     filterNode(value, data) {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
@@ -221,7 +253,7 @@ export default {
       this.$emit("update:edit", false);
       this.$emit("Update");
       this.filter = {
-        pageSize: 1000
+        pageSize: 10000
       };
     }
   }

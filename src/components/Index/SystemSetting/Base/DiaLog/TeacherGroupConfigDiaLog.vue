@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Wednesday, 3rd July 2019 1:20:24 pm
+ * Last Modified: Friday, 12th July 2019 9:25:41 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,7 +18,7 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Type==1?Edit?"编辑教研组":'新增教研组':Edit?'编辑组织部门':'添加组织部门'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Type==1?Edit?"编辑教研组":'添加教研组':Edit?'编辑部门':'添加部门'}}</span>
       <main class="form">
         <el-form
           :model="form"
@@ -38,7 +38,7 @@
             <el-input type="text" v-model="form.parentName"></el-input>
             <el-button type="primary" @click="innerVisible=true;">选择</el-button>
           </el-form-item>
-          <el-form-item label="组织描述：" prop="remark">
+          <el-form-item :label="Type==1?'教研组描述':'部门描述'" prop="remark">
             <el-input type="textarea" v-model="form.remark" maxlength="100" show-word-limit></el-input>
           </el-form-item>
         </el-form>
@@ -123,7 +123,7 @@
             <el-table-column :show-overflow-tooltip="true" label width="80">
               <template slot-scope="scope">
                 <!-- <el-checkbox v-model="scope.row." @change="classShow(scope.row.id)" label></el-checkbox>  -->
-                <el-radio v-model="radio" :label="scope.row.id">&nbsp</el-radio>
+                <el-radio v-model="radio" :label="scope.row.id">&nbsp;</el-radio>
               </template>
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="姓名" prop="name"></el-table-column>
@@ -175,12 +175,20 @@ export default {
     };
   },
   watch: {
+    innerVisible(val) {
+      if(val) {
+        
+      }
+    },
     Show(val) {
       this.dialogVisible = val;
+      this.initData();
     },
     Edit(val) {
       if (val) {
+        console.log('this.InfoObj;',this.InfoObj)
         this.form = this.InfoObj;
+        // this.initData();
       } else {
         this.form = {};
       }
@@ -214,7 +222,23 @@ export default {
       }
       TeacherPage(obj).then(res => {
         this.tableObj = res.data.data;
+        this.tableObj.data.map(item =>{
+          if(this.form.masterName == item.name){
+            this.radio = item.id
+          }
+        })
       });
+    },
+    initData() {
+      if (this.Type == 1) {
+        TeacherGroupTeacherGroupTree({id:this.InfoObj.id}).then(res => {
+          this.tree = res.data.data;
+        });
+      } else {
+        DepartmentDepartmentTree({id:this.InfoObj.id}).then(res => {
+          this.tree = res.data.data;
+        });
+      }
     },
     filterNode(value, data) {
       if (!value) return true;

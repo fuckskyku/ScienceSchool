@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 10:50:58 am
+ * Last Modified: Friday, 12th July 2019 3:07:29 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -87,7 +87,7 @@
             <span>{{scope.row.isValid?'有效':'无效'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button type="text" v-if="scope.row.edit" @click="Save(scope.row)">保存</el-button>
             <el-button
@@ -95,6 +95,17 @@
               v-if="isAuthority('sys:subejct:update')&&!scope.row.edit"
               @click="scope.row.edit=true"
             >编辑</el-button>
+            <el-button
+              type="text"
+              v-if="!scope.row.edit"
+              @click="PopShowFlag=true;PopInfoObj=scope.row"
+            >添加子模块</el-button>
+            <el-button
+              type="text"
+              class="green"
+              v-if="!scope.row.edit"
+              @click="PopShowInfoFlag=true;PopInfoObj=scope.row"
+            >查看下级</el-button>
             <el-button
               type="text"
               :class="[scope.row.isValid?'orange':'green']"
@@ -110,7 +121,21 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="SubjectPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <DiaLog :Show.sync="PopShowFlag" :InfoObj="PopInfoObj" @Update="Update"></DiaLog>
+      <DiaLogInfo :Show.sync="PopShowInfoFlag" :InfoObj="PopInfoObj" @Update="Update"></DiaLogInfo>
+      <!-- <page :tabObj.sync="tableObj" :filterObj.sync="filter" name="SubjectPage"></page> -->
     </section>
   </main>
 </template>
@@ -123,18 +148,22 @@ import {
   SubjectSaveOrUpdate
 } from "^/api/api";
 import { mapActions } from "vuex";
+import DiaLog from "./DiaLog/SubjectConfigDiaLog";
+import DiaLogInfo from "./DiaLog/SubjectConfigInfoDiaLog";
 export default {
   inject: ["reload"],
   data() {
     return {
       PopShowFlag: false,
+      PopShowInfoFlag: false,
+      PopInfoObj: {},
       tableObj: [{}],
-      filter: {},
+      filter: {pageSize:10},
       defaultLength: ""
     };
   },
   created() {
-    this.init();
+    this.init(this.filter);
   },
   methods: {
     ...mapActions(["setSettingConfig"]),
@@ -142,13 +171,10 @@ export default {
       SubjectPage(obj).then(res => {
         this.tableEdit(res.data.data.data);
         this.tableObj = res.data.data;
-
         this.defaultLength = res.data.data.data.length;
       });
     },
     Save(row) {
-      console.log(row);
-
       if (!row.orderid) {
         this.elInfo("请输入序号", "warning");
         return;
@@ -174,7 +200,16 @@ export default {
         this.init(this.filter);
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     del(index, id) {
@@ -215,6 +250,9 @@ export default {
         subjectType: 1,
         updateTime: ""
       });
+    },
+    Update() {
+      this.init(this.filter);
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -241,7 +279,8 @@ export default {
     }
   },
   components: {
-    // DiaLog
+    DiaLog,
+    DiaLogInfo
   }
 };
 </script>

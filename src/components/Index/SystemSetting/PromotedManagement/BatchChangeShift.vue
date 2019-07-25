@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 2:38:20 pm
+ * Last Modified: Tuesday, 9th July 2019 5:22:36 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -36,7 +36,7 @@
           ></el-option>
         </el-select>
       </div>
-      <hr style="margin: 20px 0;" />
+      <hr style="margin: 20px 0;">
       <p class="sub_title">目标班级</p>
       <div style="text-align:center;">
         <span>选择年级</span>
@@ -65,7 +65,7 @@
     <section>
       <el-table
         :data="tableObj.data"
-        border
+        border=""
         stripe
         :header-cell-style="{textAlign:'center',background:'#EEEEEE'}"
         :cell-style="{textAlign:'center',color:'#606266',padding:'4px 0'}"
@@ -147,7 +147,7 @@ export default {
     },
     checkSourceGrade(val) {
       this.gradeId = val;
-      this.classValue = ''
+      this.classValue = "";
       ClassList({
         gradeId: val
       }).then(res => {
@@ -156,7 +156,7 @@ export default {
     },
     checkGoalGrade(val) {
       this.goalGradeId = val;
-      this.classValue2 = ''
+      this.classValue2 = "";
       // console.log("this.goalGradeId ", this.goalGradeId);
       ClassList({
         gradeId: val
@@ -168,7 +168,7 @@ export default {
       StudentPage({
         gradeId: this.gradeId,
         classId: val,
-        pageSize: 1000
+        pageSize: 10000
       }).then(res => {
         this.tableObj = res.data.data;
       });
@@ -186,15 +186,41 @@ export default {
       console.log("handleSelectionChange", val, this.studentIdList);
     },
     save() {
-      console.log([2, 3], "handleSelectionChange", this.studentIdList);
-      this.$loadingRes("执行中");
-      StudentMoveToOtherClass({
-        gradeId: this.goalGradeId,
-        classId: this.goalClassId,
-        studentIdList: this.studentIdList
-      }).then(res => {
-        this.$loadingRes().close();
-      });
+      // console.log([2, 3], "handleSelectionChange", this.studentIdList);
+
+      if (this.goalClassId) {
+        if (this.studentIdList != "") {
+          this.$confirm("是否确认移班？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnClickModal: false,
+            closeOnPressEscape: false,
+            type: "success"
+          }).then(() => {
+            this.$loadingRes("执行中");
+            StudentMoveToOtherClass({
+              gradeId: this.goalGradeId,
+              classId: this.goalClassId,
+              studentIdList: this.studentIdList
+            }).then(res => {
+              StudentPage({
+                gradeId: this.goalGradeId,
+                classId: this.goalClassId,
+                pageSize: 10000
+              }).then(res => {
+                this.elInfo(res.data.message, "success");
+                this.tableObj = res.data.data;
+              });
+              this.$loadingRes().close();
+            });
+          })
+          .catch(() => {});
+        }else {
+          this.elInfo("请选择需要移班的学生", "warning");
+        }
+      }else {
+        this.elInfo("请先选择源班级与目标班级", "error");
+      }
     },
     edit(row) {
       this.PopInfoObj = row;

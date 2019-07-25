@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 9:07:09 am
+ * Last Modified: Tuesday, 9th July 2019 2:37:42 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -72,8 +72,8 @@
             </el-select>
           </el-form-item>
           <el-form-item label="任课老师：" class="flex" prop="teacherName">
-            <el-input :disabled="true" type="text" v-model="form.teacherName"></el-input>
-            <el-button type="primary" @click="innerVisible=true;">选择</el-button>
+            <el-input :disabled="true" id="input" type="text" v-model="form.teacherName"></el-input>
+            <el-button type="primary" @click="clearVerify();">选择</el-button>
           </el-form-item>
         </el-form>
       </main>
@@ -92,7 +92,7 @@
         <span slot="title" class="DiaLogTitle">选择</span>
         <main class="form">
           <div class="input">
-            <el-input v-model="filter.tableSearchText" placeholder="请输入查找条件"></el-input>
+            <el-input v-model="filter.tableSearchText" @change="searchTeacher(filter.tableSearchText)" placeholder="请输入查找条件"></el-input>
           </div>
           <el-table
             :data="tableObj.data"
@@ -104,7 +104,7 @@
             <el-table-column :show-overflow-tooltip="true" label width="80">
               <template slot-scope="scope">
                 <!-- <el-checkbox v-model="scope.row." @change="classShow(scope.row.id)" label></el-checkbox>  -->
-                <el-radio v-model="radio" :label="scope.row.id">&nbsp</el-radio>
+                <el-radio v-model="radio" :label="scope.row.id">&nbsp;</el-radio>
               </template>
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="姓名" prop="name"></el-table-column>
@@ -155,8 +155,18 @@ export default {
     // });
   },
   watch: {
+    innerVisible(val) {
+      if(val) {
+        this.init();
+      }else{
+        this.filter.tableSearchText = ''
+      }
+    },
     Show(val) {
       this.dialogVisible = val;
+      if (val) {
+        this.SchoolYearChange(this.form.schoolYearId);
+      }
     },
     Edit(val) {
       if (val) {
@@ -170,6 +180,16 @@ export default {
       TeacherPage().then(res => {
         this.tableObj = res.data.data;
       });
+    },
+    searchTeacher(val) {
+      TeacherPage({
+        keyWord: val
+      }).then(res => {
+        this.tableObj = res.data.data;
+      });
+    },
+    clearVerify() {
+      this.innerVisible=true;
     },
     Save() {
       this.$refs["form"].validate(valid => {
@@ -193,7 +213,8 @@ export default {
       this.form.teacherId = this.radio;
       this.tableObj.data.forEach(item => {
         if (this.radio == item.id) {
-          this.form.teacherName = item.name;
+          this.$set(this.form,"teacherName",item.name);
+          // this.form.teacherName = item.name;
         }
       });
     },
@@ -207,7 +228,7 @@ export default {
         this.classOptions = res.data.data;
       });
       GradeSubjectPage(this.form).then(res => {
-        this.subjectOption = res.data.data;
+        this.subjectOption = res.data.data.data;
       });
     },
     closeDialog() {

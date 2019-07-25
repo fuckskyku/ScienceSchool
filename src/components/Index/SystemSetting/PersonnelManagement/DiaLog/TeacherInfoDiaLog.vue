@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 2:21:13 pm
+ * Last Modified: Friday, 12th July 2019 9:20:08 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,12 +18,12 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Info?'教师信息':Edit?'编辑教师信息':'新增教师信息'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Info?'教师信息':Edit?'编辑教师信息':'添加教师信息'}}</span>
       <main class="form">
         <div class="title">
-          <span :class="{'active':step==1}" @click="step=1">基本信息</span>
+          <span :class="{'active':step==1}" @click="Step(1)">基本信息</span>
           <i>-</i>
-          <span :class="{'active':step==2}" @click="step=2">个人情况</span>
+          <span :class="{'active':step==2}" @click="Step(2)">个人情况</span>
         </div>
         <el-form
           :model="form"
@@ -55,7 +55,7 @@
               <el-input v-model="form.icCard" placeholder="请输入卡号"></el-input>
             </el-form-item>
             <el-form-item label="工号：" prop="jobNo">
-              <el-input v-model="form.jobNo" placeholder="请输入卡号"></el-input>
+              <el-input v-model="form.jobNo" placeholder="请输入工号"></el-input>
             </el-form-item>
             <el-form-item label="教研组：" prop="teacherGroupName">
               <!-- <el-select @change="teacherGroupCheck" v-model="teacherGroupName" placeholder="请选择组"> -->
@@ -399,7 +399,7 @@
       </el-dialog>
       <div slot="footer" class="dialog-footer" v-if="!Info">
         <el-button type="primary" v-if="step==2" @click="back">上一步</el-button>
-        <el-button type="primary" @click="Save">确 定</el-button>
+        <el-button type="primary" @click="Save">{{step==1?'下一步':'确定'}}</el-button>
       </div>
     </el-dialog>
   </main>
@@ -439,8 +439,8 @@ export default {
         sex: 1,
         state: 1,
         teacherDetailIn: {
-          hyzk: 90,
-          jkzk: 1,
+          hyzk: "90",
+          jkzk: "1",
           sfqrzsfzyby: "0",
           sfytsjycyzs: "0",
           sfsgtjzypypx: "0",
@@ -487,6 +487,7 @@ export default {
     Edit(val) {
       if (val) {
         this.init();
+        
       }
     }
   },
@@ -505,14 +506,14 @@ export default {
       });
     });
     PositionPage({}).then(res => {
-      // this.PositionOptions = res.data.data.data;
-      res.data.data.data.map(item => {
-        this.PositionOptions.push({
-          id: item.id,
-          name: item.name,
-          positionName: item.positionName
-        });
-      });
+      this.PositionOptions = res.data.data.data
+      // res.data.data.data.map(item => {
+      //   this.PositionOptions.push({
+      //     id: item.id,
+      //     // name: item.name,
+      //     positionName: item.positionName
+      //   });
+      // });
     });
   },
   methods: {
@@ -564,6 +565,7 @@ export default {
       });
     },
     tagClose(val) {
+      
       var that = this;
       this.roleTags.splice(this.roleTags.indexOf(val), 1);
       this.tableObj.map((item, index) => {
@@ -573,9 +575,9 @@ export default {
           });
         }
       });
-      if (this.roleTags.length == 0) {
-        this.$refs.multipleTable.clearSelection();
-      }
+      // if (this.roleTags.length == 0) {
+      //   this.$refs.multipleTable.clearSelection();
+      // }
     },
     tagClose2(val) {
       this.RroleTags.splice(this.RroleTags.indexOf(val), 1);
@@ -583,7 +585,6 @@ export default {
       this.RroleTags.map(item => {
         this.form.roleIdList.push(item.id);
       });
-      // console.log(this.RroleTags,'this.form.roleIdList',this.form.roleIdList)
     },
     clear() {
       this.roleTags = [];
@@ -620,17 +621,21 @@ export default {
         this.form.roleIdList = [];
         this.RroleTags = this.form.userRoleExList;
         this.imageUrl = this.form.faceImg;
+        // this.form.faceImg = "http://10.10.101.15:8099"  + this.form.faceImg;
+        // console.log('this.form.faceImg',this.form.faceImg)
         this.$set(this.form, "teacherDetailIn", this.form.teacherDetail);
         if (that.form.teacherGroupRelationOut == null) {
           that.$set(that.form, "teacherGroupRelationOut", {
-            teacherGroupName: ""
+            teacherGroupName: "",
+            departmentId: ""
           });
         } else {
-          that.form.teacherGroupIds = [that.form.teacherGroupRelationOut.id];
+          that.form.teacherGroupIds = [
+            that.form.teacherGroupRelationOut.departmentId
+          ];
         }
-
         this.form.userRoleExList.map(item => {
-          this.form.roleIdList.push(item.id);
+          this.form.roleIdList.push(item.roleId);
         });
         //console.log('this.form.roleIdList',this.form.roleIdList)
         this.form.teacherPositionExList.map(item => {
@@ -648,6 +653,25 @@ export default {
     },
     sexChange(val) {
       // console.log(val);
+    },
+    Step(type) {
+      if (this.form.roleIdList.length != 0) {
+        this.$set(this.form, "roleStatus", 1);
+      } else {
+        this.$set(this.form, "roleStatus", "");
+      }
+      if(!this.Info) {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            this.step = type;
+            this.$refs["form"].clearValidate();
+          } else {
+            return false;
+          }
+        });
+      }else{
+        this.step = type;
+      }
     },
     Save() {
       if (this.form.roleIdList.length != 0) {
@@ -713,18 +737,19 @@ export default {
         positionIds: [], //职位
         roleIdList: [] //角色
       };
-      this.roleTags = [],
-      this.RroleTags = [],
-      this.positionValue = [];
+      (this.roleTags = []), (this.RroleTags = []), (this.positionValue = []);
       this.departmentValue = [];
       this.teacherGroupValue = [];
       this.departmentValueList = [];
       this.positionValueList = [];
     },
-    exportPhoto() {},
+    exportPhoto() {
+
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.form.faceImg = res.data.url;
+      this.form.faceImg = URL.createObjectURL(res.data.url);
+      console.log('this.form.faceImg',this.form.faceImg)
     },
     beforeAvatarUpload(file) {
       // const isJPG = file.type === "image/jpeg";

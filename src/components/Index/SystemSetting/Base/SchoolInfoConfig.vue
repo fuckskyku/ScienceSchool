@@ -169,29 +169,29 @@ export default {
       }
     }
   },
-  beforeRouteLeave(to, from, next) {
-    if (this.editFlag || this.editFlagTwo) {
-      this.$confirm("您修改的内容尚未保存，是否保存后再离开该界面?", "提示", {
-        confirmButtonText: "保存并离开",
-        cancelButtonText: "直接离开",
-        closeOnClickModal: false,
-        closeOnPressEscape: false,
-        type: "warning"
-      })
-        .then(() => {
-          this.edit();
-          this.editTwo();
-          next();
-        })
-        .catch(() => {
-          next();
-        });
-    } else {
-      next();
-    }
-    // 导航离开该组件的对应路由时调用
-    // 可以访问组件实例 `this`
-  }
+  // beforeRouteLeave(to, from, next) {
+  //   if (this.editFlag || this.editFlagTwo) {
+  //     this.$confirm("您修改的内容尚未保存，是否保存后再离开该界面?", "提示", {
+  //       confirmButtonText: "保存并离开",
+  //       cancelButtonText: "直接离开",
+  //       closeOnClickModal: false,
+  //       closeOnPressEscape: false,
+  //       type: "warning"
+  //     })
+  //       .then(() => {
+  //         this.edit();
+  //         this.editTwo();
+  //         next();
+  //       })
+  //       .catch(() => {
+  //         next();
+  //       });
+  //   } else {
+  //     next();
+  //   }
+  //   // 导航离开该组件的对应路由时调用
+  //   // 可以访问组件实例 `this`
+  // }
 };
 </script>
 

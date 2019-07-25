@@ -37,6 +37,7 @@
             name="toImportFile"
             :on-change="handleAvatarChange"
             :on-success="handleAvatarSuccess"
+            :on-remove="handRemove"
             :before-upload="beforeAvatarUpload"
             :auto-upload="false"
           >
@@ -74,6 +75,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      flag: false,
       form: {}
     };
   },
@@ -89,9 +91,18 @@ export default {
   created() {},
   methods: {
     Save() {
-      this.$refs.LeadingIn.submit();
+      if (this.flag){
+        this.$refs.LeadingIn.submit()
+        this.flag = false
+      }else{
+        this.elInfo("请先选择上传模板","warning")
+      }
+    },
+    handRemove(){
+      this.flag = false
     },
     handleAvatarChange(file, fileList) {
+      this.flag = true
       if (fileList.length > 1) {
         fileList.splice(0, 1);
       }
@@ -105,13 +116,14 @@ export default {
       }
     },
     beforeAvatarUpload(file) {
-      const isType =
-        file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-      if (!isType) {
+      var fileName=new Array()
+      fileName =file.name.split('.');
+      const extension = fileName[fileName.length-1] === 'xls'
+      const extension2 =  fileName[fileName.length-1]=== 'xlsx'
+      if (!extension && !extension2) {
         this.$message.error("上传文件只能是 xlsx或者xls 格式!");
       }
-      return isType;
+      return extension || extension2;
     },
     closeDialog() {
       this.$emit("update:show", false);

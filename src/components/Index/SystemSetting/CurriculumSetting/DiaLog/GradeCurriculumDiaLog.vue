@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 9:56:18 am
+ * Last Modified: Tuesday, 9th July 2019 2:08:56 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -99,6 +99,7 @@
         append-to-body
         class="innerDiaLog"
         :close-on-click-modal="false"
+        @close="filter={}"
       >
         <span slot="title" class="DiaLogTitle">选择人员</span>
         <main class="form">
@@ -115,7 +116,7 @@
             <el-table-column :show-overflow-tooltip="true" label width="80">
               <template slot-scope="scope">
                 <!-- <el-checkbox v-model="scope.row." @change="classShow(scope.row.id)" label></el-checkbox>  -->
-                <el-radio v-model="radio" :label="scope.row.id">&nbsp</el-radio>
+                <el-radio v-model="radio" :label="scope.row.id">&nbsp;</el-radio>
               </template>
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="姓名" prop="name"></el-table-column>
@@ -168,15 +169,18 @@ export default {
     Edit(val) {
       if (val) {
         // this.form = this.InfoObj;
+        this.InfoObj.schoolYearId = Number(this.InfoObj.schoolYearId)
         GradeSubjectInfo({ gradeSubjectId: this.InfoObj.id }).then(res => {
           this.form = res.data.data;
+          this.$set(this.form, "schoolYearId", this.InfoObj.schoolYearId);
+          this.SchoolYearChange(this.form.schoolYearId);
         });
       }
     }
   },
   created() {
-    this.SchoolYearChange(this.form.schoolYearId);
-    this.init();
+    // this.SchoolYearChange(this.form.schoolYearId);
+    // this.init();
   },
   methods: {
     init(obj) {
@@ -226,6 +230,7 @@ export default {
       this.$emit("update:show", false);
       this.$emit("update:edit", false);
       this.$emit("Update");
+      this.filter = {};
       this.radio = "";
       this.form = {
         schoolYearId: this.Dictionary.SchoolYearDefault

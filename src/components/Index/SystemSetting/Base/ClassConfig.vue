@@ -64,15 +64,21 @@
         <!-- <el-table-column :show-overflow-tooltip="true" label="班级代码" prop="classId"></el-table-column> -->
         <el-table-column :show-overflow-tooltip="true" label="年级" prop="gradeName"></el-table-column>
         <el-table-column :show-overflow-tooltip="true" label="班级名称" prop="name"></el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="班级类型" prop="classTypeName"></el-table-column>
+        <el-table-column :show-overflow-tooltip="true" label="班级类别" prop="classTypeName"></el-table-column>
         <!-- <el-table-column :show-overflow-tooltip="true" label="入学学年" prop="enteryear"></el-table-column> -->
         <el-table-column :show-overflow-tooltip="true" label="建班日期" prop="createDate"></el-table-column>
         <el-table-column :show-overflow-tooltip="true" label="学制" prop="studyLength"></el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="班主任" prop="classTeacherName">
+        <el-table-column :show-overflow-tooltip="true" label="班主任" prop="classMasterName">
           <template slot-scope="scope">
-            <span>{{scope.row.classTeacherName}}</span>
-            <el-button type="text" @click="selectTeacher(scope.row)">选择</el-button>
+            <div class="warp">
+              <span class="context">{{scope.row.classMasterName}}</span>
+              <el-button type="text" @click="selectTeacher(scope.row)">选择</el-button>
+            </div>
+            <!-- <span>{{scope.row.classMasterName}}</span> -->
+            <!-- <el-input v-model="scope.row.classMasterName"></el-input> -->
+            <!-- <el-button type="text" @click="selectTeacher(scope.row)">选择</el-button> -->
           </template>
+          
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
@@ -90,7 +96,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="ClassPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj="filter" name="ClassPage"></page> -->
     </section>
 
     <DiaLog :Show.sync="PopShowFlag" :Edit.sync="PopEdit" :InfoObj="PopInfoObj" @Update="Update"></DiaLog>
@@ -146,17 +164,30 @@ export default {
   },
   methods: {
     init(obj) {
+      this.PopInfoObj.schoolYearId = this.filter.schoolYearId
       ClassPage(obj).then(res => {
         this.tableObj = res.data.data;
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
     filterChange(flag) {
+      delete this.filter.pageNo;
       if (flag) {
         this.filter.gradeId = "";
+        this.filter.pageNo = "";
         GradeList(this.filter).then(res => {
           this.gradeOptions = res.data.data;
         });
       }
+      this.PopInfoObj.schoolYearId = this.filter.schoolYearId
+      // console.log("this.filter",this.filter)
       this.init(this.filter);
     },
     selectTeacher(row) {
@@ -169,6 +200,7 @@ export default {
         "warning",
         function() {
           ClassDelete({ id: id }).then(res => {
+            this.elInfo(res.data.message,"success")
             this.init(this.filter);
           });
         }.bind(this)

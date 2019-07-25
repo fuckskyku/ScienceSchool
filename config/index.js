@@ -11,8 +11,9 @@ module.exports = {
     proxyTable: {
       "/api": {
         // target: "http://10.10.101.15:9000",
-        // target: "http://10.10.101.213:8099",
-        target: "http://10.10.101.224:8099",
+        target: "http://10.10.101.213:8099",
+        // target: "http://10.10.101.224:8099",
+        // target: "http://10.10.101.252:8099",
         // target: "http://10.10.101.15:9001",
         changeOrigin: true,
         ws: true,

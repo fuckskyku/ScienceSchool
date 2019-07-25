@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 3:43:09 pm
+ * Last Modified: Friday, 12th July 2019 9:19:20 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,7 +18,7 @@
       width="70%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Info?'家长信息':Edit?'编辑家长信息':'新增家长信息'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Info?'家长信息':Edit?'编辑家长信息':'添加家长信息'}}</span>
       <main class="form">
         <el-form
           :model="form"
@@ -76,7 +76,7 @@
                       :prop="'studentParentIns.'+scope.$index+'.gx'"
                       :rules="Verification.ParentManagementUser.gx"
                     >
-                      <el-select v-model="scope.row.gx" placeholder="请选择关系">
+                      <el-select v-model="scope.row.gx" placeholder="请选择关系" @change="checkRelation">
                         <el-option
                           v-for="item in Dictionary.DomesticRelation"
                           :key="item.val"
@@ -91,7 +91,7 @@
                 <el-table-column label="操作" width="200">
                   <template slot-scope="scope">
                     <el-button type="text" @click="add()">添加</el-button>
-                    <el-button type="text" class="red" @click="delRow(scope.$index)">删除</el-button>
+                    <el-button type="text" :class="{'red':!Info}" @click="delRow(scope.$index)">删除</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -109,7 +109,8 @@
         <span slot="title" class="DiaLogTitle">选择学生</span>
         <main class="form">
           <div style="margin-bottom:40px;">
-            <el-input placeholder="请输入学生" v-model="filter.name"></el-input>
+            <el-input placeholder="请输入学籍号/姓名/身份证号" v-model="keyWord" @change="search"></el-input>
+            <!-- <el-input placeholder="请输入关键字" v-model="filter.name"></el-input> -->
           </div>
           <el-table
             :data="tableObj.data"
@@ -117,9 +118,14 @@
             :header-cell-style="{textAlign:'center',background:'#EEEEEE'}"
             :cell-style="{textAlign:'center',color:'#606266',padding:'4px 0'}"
             highlight-current-row
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange1"
           >
-            <el-table-column :show-overflow-tooltip="true" label="编号" prop="xjh"></el-table-column>
+            <el-table-column :show-overflow-tooltip="true" label width="55">
+              <template slot-scope="scope">
+                <el-radio v-model="radio" @change="handleSelectionChange(scope.row)" :label="scope.row.id">&nbsp;</el-radio>
+              </template>
+            </el-table-column>
+            <el-table-column :show-overflow-tooltip="true" label="学籍号" prop="xjh"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="姓名" prop="name"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="班级" prop="className"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="性别" prop="sex">
@@ -127,6 +133,18 @@
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" label="身份证号" prop="idCard"></el-table-column>
           </el-table>
+          <div class="PageDiv">
+            <el-pagination
+              background
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="tableObj.pageNo"
+              :page-sizes="[10, 20, 40,60,80,100]"
+              :page-size.sync="tableObj.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableObj.totalCount"
+            ></el-pagination>
+          </div>
         </main>
         <div slot="footer" class="dialog-footer" style="text-align:center">
           <el-button @click="innerVisible=false">取 消</el-button>
@@ -158,17 +176,33 @@ export default {
         sex: 1,
         studentParentIns: [{}]
       },
-      filter: {},
+      filter: {
+        schoolYearId: this.Dictionary.SchoolYearDefault,
+        keyWord: "",
+      },
       relationData: [],
       tempIndex: "",
       tempObj: {},
-      tableObj: []
+      tableObj: [],
+      keyWord: '',
+      radio: ''
     };
   },
   created() {
-    this.init();
+    
   },
   watch: {
+    innerVisible(val) {
+      if(!val) {
+        this.radio = '';
+        this.keyWord = '';
+      }else{
+        
+        this.init(this.filter);
+        
+      }
+    },
+    
     Show(val) {
       this.dialogVisible = val;
     },
@@ -179,9 +213,10 @@ export default {
     }
   },
   methods: {
-    init() {
-      StudentPage().then(res => {
+    init(obj) {
+      StudentPage(obj).then(res => {
         this.tableObj = res.data.data;
+        
       });
     },
     Infoinit() {
@@ -190,7 +225,35 @@ export default {
         this.$set(this.form, "studentParentIns", this.form.studentParentOuts);
       });
     },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
+    },
+    checkRelation(val) {
+      this.form.studentParentIns.map((item,index) => {
+        if(index != 0){
+          if(item.gx != this.form.studentParentIns[0].gx) {
+            this.elInfo("成员关系选择错误","warning")
+            this.form.studentParentIns[index].gx = ''
+          }
+        }
+      })
+    },
+    search() {
+      this.$set(this.filter,"keyWord",this.keyWord);
+      this.init(this.filter)
+    },
     saveStudent() {
+      this.tableObj.data.map(item => {
+        if(item.id == this.radio) {
+          this.tempObj = item
+        }
+      })
+      console.log("tempObj",this.tempObj)
       this.form.studentParentIns[
         this.tempIndex
       ].studentName = this.tempObj.name;
@@ -202,6 +265,8 @@ export default {
     },
     selectStudent(index) {
       this.tempIndex = index;
+      this.radio = this.form.studentParentIns[this.tempIndex].studentId
+      
       this.innerVisible = true;
     },
     Save() {
@@ -217,8 +282,27 @@ export default {
         }
       });
     },
+    searchStudent(val) {
+      delete this.filter.pageNo;
+      this.init(this.filter);
+      this.radio = this.form.studentParentIns[this.tempIndex].studentId
+    },
+    handleSelectionChange(val) {
+      this.tempName = val.name
+    },
+    // selectStudent(val) { 
+    //   this.tempName = val.name
+    //   // console.log(this.form.name,val)
+    // },
     add() {
-      this.form.studentParentIns.push({});
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+           this.form.studentParentIns.push({});
+        } else {
+          return false;
+        }
+      });
+     
     },
     delRow(index) {
       if (this.form.studentParentIns.length != 1) {
@@ -227,7 +311,7 @@ export default {
         this.elInfo("最后一条不能删除", "warning");
       }
     },
-    handleCurrentChange(val) {
+    handleCurrentChange1(val) {
       this.tempObj = val;
     },
     closeDialog() {

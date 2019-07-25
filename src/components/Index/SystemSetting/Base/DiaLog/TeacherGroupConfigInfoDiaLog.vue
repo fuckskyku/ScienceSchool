@@ -4,7 +4,7 @@
  * File Created: Monday, 27th May 2019 3:48:09 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 5:37:00 pm
+ * Last Modified: Friday, 12th July 2019 9:21:58 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -18,15 +18,15 @@
       width="60%"
       @close="closeDialog"
     >
-      <span slot="title" class="DiaLogTitle">{{Type==1?'教研组相关人员':'部门详情'}}</span>
+      <span slot="title" class="DiaLogTitle">{{Type==1?'教研组相关人员':'部门相关人员'}}</span>
       <main class="form">
         <div class="Title_Group">
           <div class="Title">
-            <span style="padding-right:25px;">{{Type==1?'教研组名称：':'办公室名称：'}}{{InfoObj.name}}</span>
+            <span style="padding-right:25px;">{{Type==1?'教研组名称：':'部门名称：'}}{{InfoObj.name}}</span>
             <span>分管领导：{{InfoObj.masterName}}</span>
           </div>
           <div class="ButtonGroup">
-            <el-button type="primary" @click="innerVisible=true">新增</el-button>
+            <el-button type="primary" @click="innerVisible=true">添加</el-button>
             <!-- <el-button type="danger" @click="del">批量删除</el-button> -->
           </div>
         </div>
@@ -50,8 +50,9 @@
               <span>{{scope.row.sex==1?"男":'女'}}</span>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="部门" prop="teacherGroupName"></el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="职位" prop="departmentName"></el-table-column>
+          <el-table-column :show-overflow-tooltip="true" v-if="Type==2" label="教研组" prop="teacherGroupName"></el-table-column>
+          <el-table-column :show-overflow-tooltip="true" v-if="Type==1" label="部门" prop="departmentName"></el-table-column>
+          <el-table-column :show-overflow-tooltip="true" label="职位" prop="positionName"></el-table-column>
           <el-table-column :show-overflow-tooltip="true" label="手机号码" prop="mobile"></el-table-column>
           <el-table-column :show-overflow-tooltip="true" label="是否领导" prop="master">
             <template slot-scope="scope">
@@ -80,7 +81,7 @@
         :close-on-click-modal="false"
         @close="filter={}"
       >
-        <span slot="title" class="DiaLogTitle">新增</span>
+        <span slot="title" class="DiaLogTitle">添加</span>
         <main class="form">
           <div class="input">
             <el-input
@@ -125,6 +126,7 @@
 import {
   TeacherGroupTeacherGroupUserList,
   TeacherPage,
+  TeacherGroupUpdateIsMaster,
   TeacherGroupSaveTeacherGroupUser,
   TeacherGroupDelTeacherGroupRelation,
   DepartmentDepartmentUserPage,
@@ -261,7 +263,7 @@ export default {
     },
     isLead(row) {
       if (this.Type == 2) {
-        DepartmentUpdateIsMaster({
+        TeacherGroupUpdateIsMaster({
           departmentId: this.InfoObj.id,
           teacherId: row.id
         }).then(res => {
@@ -271,7 +273,7 @@ export default {
           this.init();
         });
       } else {
-        DepartmentUpdateIsMaster({
+        TeacherGroupUpdateIsMaster({
           departmentId: this.InfoObj.id,
           teacherId: row.id
         }).then(res => {

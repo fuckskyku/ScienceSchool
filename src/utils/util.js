@@ -79,6 +79,7 @@ export default {
       });
       return login;
     };
+    // 删除
     Vue.prototype.OpenDel = function(str, type, fun) {
       this.$confirm(str ? str : "是否删除数据？", "提示", {
         confirmButtonText: "确定",

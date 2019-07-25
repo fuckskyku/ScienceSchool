@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Thursday, 4th July 2019 2:29:50 pm
+ * Last Modified: Friday, 12th July 2019 9:19:52 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -30,14 +30,20 @@
             type="primary"
             @click="addTeacher()"
             v-if="isAuthority('sys:teacher:create')"
-          >新增</el-button>
+          >添加</el-button>
           <el-button type="primary" @click="dowload" v-if="isAuthority('sys:teacher:export')">导出</el-button>
           <el-button
             type="primary"
             @click="PopShowLeadingIn=true"
             v-if="isAuthority('sys:teacher:import')"
           >导入</el-button>
-          <el-upload
+          <el-button
+            @click="PopShowTeacherLeadingIn=true"
+            style="margin:0 15px"
+            type="primary"
+            v-if="isAuthority('sys:student:importImg')"
+          >照片导入</el-button>
+          <!-- <el-upload
             class="upload-demo"
             action="/api/teacher/uploadBetchImg"
             :on-success="handleAvatarSuccess"
@@ -51,7 +57,7 @@
               type="primary"
               v-if="isAuthority('sys:teacher:importImg')"
             >照片导入</el-button>
-          </el-upload>
+          </el-upload> -->
         </div>
       </div>
 
@@ -102,7 +108,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <page :tabObj.sync="tableObj" :filterObj="filter" name="TeacherPage"></page>
+      <div class="PageDiv">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="tableObj.pageNo"
+          :page-sizes="[10, 20, 40,60,80,100]"
+          :page-size.sync="tableObj.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableObj.totalCount"
+        ></el-pagination>
+      </div>
+      <!-- <page :tabObj.sync="tableObj" :filterObj="filter" name="TeacherPage"></page> -->
     </section>
     <DiaLog
       :Show.sync="PopShowFlag"
@@ -118,11 +136,13 @@
       @Update="Update"
       :Href="'/static/Dowload/教师信息导入模板.xlsx'"
     ></LeadingIn>
+    <TeacherLeadingIn :Show.sync="PopShowTeacherLeadingIn"></TeacherLeadingIn>
   </main>
 </template>
 
 <script>
 import ChangePwDiaLog from "../../../Templet/ChangePwDiaLog";
+import TeacherLeadingIn from "./DiaLog/TeacherLeadingIn";
 import DiaLog from "./DiaLog/TeacherInfoDiaLog";
 import LeadingIn from "../../../Templet/LeadingIn";
 import { TeacherPage, TeacherDelete, TeacherExportData } from "^/api/api";
@@ -133,6 +153,7 @@ export default {
       PopShowFlag: false,
       PopShowPwFlag: false,
       PopShowLeadingIn: false,
+      PopShowTeacherLeadingIn: false,
       PopEdit: false,
       PopInfo: false,
       PopInfoObj: {},
@@ -145,10 +166,11 @@ export default {
     };
   },
   created() {
-    this.init();
+    this.init(this.filter);
   },
   methods: {
     handleCheckedChange(value) {
+      delete this.filter.pageNo;
       this.$set(
         this.filter,
         "noCard",
@@ -174,6 +196,14 @@ export default {
         console.log("tableObj", res.data.data);
         this.tableObj = res.data.data;
       });
+    },
+    handleSizeChange(val) {
+      this.$set(this.filter,"pageSize",val)
+      this.init(this.filter);
+    },
+    handleCurrentChange(val) {
+      this.$set(this.filter,"pageNo",val)
+      this.init(this.filter);
     },
     changePwd(row) {
       this.PopShowPwFlag = true;
@@ -214,6 +244,7 @@ export default {
 
     Update() {
       this.init({
+        pageNo: this.filter.pageNo,
         noCard: this.checkList.some((item, index, array) => {
           return item == "noCard";
         }),
@@ -241,6 +272,7 @@ export default {
   components: {
     DiaLog,
     ChangePwDiaLog,
+    TeacherLeadingIn,
     LeadingIn
   }
 };

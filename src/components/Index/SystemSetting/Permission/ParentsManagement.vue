@@ -4,7 +4,7 @@
  * File Created: Monday, 3rd June 2019 5:05:34 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Friday, 5th July 2019 1:54:51 pm
+ * Last Modified: Friday, 12th July 2019 9:19:29 am
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -50,7 +50,7 @@
             type="primary"
             @click="PopShowFlag = true"
             v-if="isAuthority('sys:parent:create')"
-          >新增</el-button>
+          >添加</el-button>
           <el-button
             type="primary"
             @click="PopShowLeadingIn=true"
@@ -186,7 +186,9 @@ export default {
     del(id) {
       let AllFlag = false;
       if (!id) {
+        
         if (!this.delTableList.length) {
+          AllFlag = false;
           this.elInfo("请选择需要批量删除的数据", "warning");
         } else {
           AllFlag = true;
@@ -194,6 +196,7 @@ export default {
       } else {
         AllFlag = true;
       }
+      console.log('id',id,'this.delTableList',this.delTableList)
       if (AllFlag)
         this.OpenDel(
           id ? null : "是否批量删除已选数据",
@@ -202,6 +205,8 @@ export default {
             ParentDelete({
               parentIds: id ? id : this.delTableList.toString()
             }).then(res => {
+              this.delTableList = [];
+              this.delTableUserIdList = [];
               this.init(this.filter);
             });
           }.bind(this)
@@ -239,11 +244,14 @@ export default {
           disabled: flag,
           userIds: id ? id : this.delTableUserIdList.toString()
         }).then(res => {
+          this.delTableUserIdList = [];
+          this.delTableList = [];
           this.elInfo(res.data.message, "success");
           this.init(this.filter);
         });
     },
     SchoolYearChange(val) {
+      delete this.filter.pageNo;
       this.filter.gradeId = "";
       this.filter.classId = "";
       this.classOptions = [];
@@ -253,6 +261,7 @@ export default {
       });
     },
     GradeChange(val) {
+      delete this.filter.pageNo;
       this.filter.classId = "";
       ClassList({ gradeId: val }).then(res => {
         this.classOptions = res.data.data;
@@ -260,6 +269,7 @@ export default {
       });
     },
     filterChange() {
+      delete this.filter.pageNo;
       this.init(this.filter);
     },
     checked(selection, row) {
@@ -269,9 +279,13 @@ export default {
       this.delTableUserIdList = selection.map((item, index, array) => {
         return item.userId;
       });
+      // console.log(this.delTableList,'this.delTableList',this.delTableUserIdList,'this.delTableUserIdList')
     },
     dowload() {
-      ParentExportParentUserData(this.filter).then(res => {});
+      // console.log('this.filter',this.filter)
+      ParentExportParentUserData(this.filter).then(res => {
+
+      });
     },
     Update() {
       this.init(this.filter);

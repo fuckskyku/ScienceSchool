@@ -241,6 +241,7 @@ export default {
     let H = document.documentElement.clientHeight || document.body.clientHeight;
     // this.H = H - 60 - 231;
     this.H = H - 60 - 142;
+    // console.log(this.isAuthority(1))
   },
   methods: {
     ...mapActions(["setSettingConfig"]),

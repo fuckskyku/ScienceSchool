@@ -4,7 +4,7 @@
  * File Created: Tuesday, 21st May 2019 3:30:50 pm
  * Author: LGH (1415684247@QQ.COM)
  * -----
- * Last Modified: Monday, 8th July 2019 9:46:21 am
+ * Last Modified: Friday, 12th July 2019 2:47:53 pm
  * Modified By: LGH (1415684247@QQ.COM>)
  * -----
  * Copyright 2019 - 2019 Your Company, Your Company
@@ -33,7 +33,9 @@ export const NonUniformAccountList = param=>{return req.post('index/nonUniformAc
 
 //应用管理-列表
 export const AppUniformAccountList = param =>{return req.post('app/uniformAccountList',param)}
-//应用管理-添加应用
+export const AppSaveUniformApp = param =>{return req.post('app/saveUniformApp',param)}
+
+//应用管理-添加应用（非）
 export const AppSave = param =>{return req.post('app/save',param)}
 //应用管理-删除应用 
 export const AppDelete = param=>{return req.post('app/delete',param)}
@@ -87,7 +89,8 @@ export const SubjectDelete = param=>{return req.post('subject/delete',param)}
 export const SubjectUpdateStatus = param =>{return req.post('subject/updateStatus',param)}
 //学科管理-保存和修改
 export const SubjectSaveOrUpdate = param=>{return req.post('subject/saveOrUpdate',param)}
-
+// 学科管理-查询子模块学科列表
+export const SubjectSelectChildSubject = param=>{return req.post('subject/selectChildSubject',param)}
 
 //年级设置 -列表
 export const GradeList = param=>{return req.post('grade/list',param)}
@@ -135,6 +138,8 @@ export const TeacherGroupDelete = param =>{return req.post('teacherGroup/delete'
 export const TeacherGroupDelTeacherGroupRelation = param =>{return req.post('teacherGroup/delTeacherGroupRelation',param)}
 //教研组管理-相关人员
 export const TeacherGroupTeacherGroupUserList = param=>{return req.post('teacherGroup/teacherGroupUserList',param)}
+//教研组管理-修改是否领导
+export const TeacherGroupUpdateIsMaster = param=>{return req.post('teacherGroup/updateIsMaster',param)}
 
 
 
@@ -222,7 +227,8 @@ export const RoleInfo = param =>{return req.get('role/info',param)}
 //角色管理-权限列表
 export const PermissionTreeList = param =>{return req.get('permission/treeList',param)}
 //角色管理-角色委派
-export const RoleBetchSetTeacherRole = param=>{return req.postJson('role/betchSetTeacherRole',param)}
+// export const RoleBetchSetTeacherRole = param=>{return req.postJson('role/betchSetTeacherRole',param)}
+export const RoleBetchSetTeacherRole = param=>{return req.postJson('role/batchSetTeacherRole',param)}
 //角色管理-角色委派详情
 export const RoleTeacherRoleList = param=>{return req.get('role/teacherRoleList',param)}
 //角色管理-保存更新
@@ -307,3 +313,6 @@ export const StudentChangeInfo = param =>{return req.get('studentChange/info',pa
 
 //学籍异动 保存或更新
 export const StudentChangeSaveOrUpdate = param =>{return req.post('studentChange/saveOrUpdate',param)}
+
+//班主任 保存或更新
+export const ClassUpdateClassMaster = param =>{return req.post('class/updateClassMaster',param)}
